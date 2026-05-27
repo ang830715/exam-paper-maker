@@ -1,0 +1,409 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[a4paper,left=18mm,right=18mm,top=17mm,bottom=17mm]{geometry}
+\usepackage[scaled=0.95]{helvet}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tikz}
+\usepackage{xcolor}
+
+\renewcommand{\familydefault}{\sfdefault}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\headheight}{15pt}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\newcommand{\examtitle}{PHYSICS}
+\newcommand{\examcode}{0625/42}
+\newcommand{\papername}{Paper 4 Theory (Extended)}
+\newcommand{\examseason}{Practice Paper}
+\newcommand{\examtime}{1 hour 15 minutes}
+\newcommand{\exammarks}{80}
+\newcommand{\examyear}{2026}
+\newcommand{\examfooter}{0625/42/PRACTICE}
+\newcommand{\copyrightline}{\copyright\ Practice paper}
+
+\fancyhead[C]{\ifnum\value{page}>1\textbf{\thepage}\fi}
+\fancyfoot[L]{\ifnum\value{page}>1{\small \copyright\ Practice paper}\fi}
+\fancyfoot[C]{\ifnum\value{page}>1{\small \examfooter}\fi}
+\fancyfoot[R]{\ifnum\value{page}>1\ifodd\value{page}{\small [Turn over}\fi\fi}
+
+\newcommand{\candidateboxes}[1]{%
+  \begin{tikzpicture}[baseline=-0.6ex,x=1mm,y=1mm]
+    \foreach \x in {0,...,#1} {
+      \draw (\x*8.5,0) -- (\x*8.5,12.5);
+    }
+    \draw (0,0) rectangle (#1*8.5,12.5);
+  \end{tikzpicture}%
+}
+
+\newcommand{\namebox}{\fbox{\rule{0pt}{12mm}\hspace{139mm}}}
+
+\newcommand{\frontpage}{%
+  \thispagestyle{empty}
+  \begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+    \node[anchor=north west] at ([xshift=92mm,yshift=-9mm]current page.north west) {%
+      \begin{minipage}{78mm}
+        \begin{tabular}{@{}c@{\hspace{2mm}}l@{}}
+          \begin{tikzpicture}[x=1mm,y=1mm,baseline=5mm]
+            \draw[line width=0.35mm] (0,9) -- (8,9) -- (8,2) -- (4,0) -- (0,2) -- cycle;
+            \draw[line width=0.25mm] (4,9) -- (4,0);
+            \draw[line width=0.25mm] (0,5.5) -- (8,5.5);
+            \draw[line width=0.25mm] (2,9) -- (2,1);
+            \draw[line width=0.25mm] (6,9) -- (6,1);
+          \end{tikzpicture} &
+          \begin{tabular}{@{}l@{}}
+            {\Large\bfseries Cambridge Assessment}\\[-1mm]
+            {\Large International Education}
+          \end{tabular}
+        \end{tabular}
+      \end{minipage}
+    };
+
+    \node[anchor=north west,font=\LARGE\bfseries] at ([xshift=20mm,yshift=-35mm]current page.north west)
+      {Cambridge IGCSE\textsuperscript{TM}};
+
+    \node[anchor=north west,align=left] at ([xshift=20mm,yshift=-50mm]current page.north west)
+      {CANDIDATE\\NAME};
+    \node[anchor=north west] at ([xshift=45mm,yshift=-48mm]current page.north west) {\namebox};
+
+    \node[anchor=north west,align=left] at ([xshift=20mm,yshift=-66mm]current page.north west)
+      {CENTRE\\NUMBER};
+    \node[anchor=north west] at ([xshift=45mm,yshift=-64mm]current page.north west) {\candidateboxes{5}};
+    \node[anchor=north west,align=left] at ([xshift=130mm,yshift=-66mm]current page.north west)
+      {CANDIDATE\\NUMBER};
+    \node[anchor=north west] at ([xshift=153mm,yshift=-64mm]current page.north west) {\candidateboxes{4}};
+
+    \draw ([xshift=20mm,yshift=-79mm]current page.north west) -- ([xshift=187mm,yshift=-79mm]current page.north west);
+    \node[anchor=north west] at ([xshift=20mm,yshift=-81mm]current page.north west) {%
+      \begin{minipage}{167mm}
+        \small
+        \begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}r@{}}
+          {\bfseries \examtitle} & {\bfseries \examcode}\\[2mm]
+          \papername & {\bfseries \examseason}\\[2mm]
+          & {\bfseries \examtime}
+        \end{tabular*}
+
+        \vspace{5.5mm}
+        You must answer on the question paper.
+
+        \vspace{4mm}
+        No additional materials are needed.
+
+        \vspace{3.5mm}
+        \hrule
+        \vspace{2mm}
+        {\bfseries INSTRUCTIONS}
+        \begin{itemize}[leftmargin=5mm,itemsep=0mm,topsep=0.5mm,parsep=0mm,partopsep=0mm]
+          \item Answer \textbf{all} questions.
+          \item Use a black or dark blue pen. You may use an HB pencil for any diagrams or graphs.
+          \item Write your name, centre number and candidate number in the boxes at the top of the page.
+          \item Write your answer to each question in the space provided.
+          \item Do \textbf{not} use an erasable pen or correction fluid.
+          \item Do \textbf{not} write on any bar codes.
+          \item You may use a calculator.
+          \item You should show all your working and use appropriate units.
+          \item Take the weight of 1.0 kg to be 10 N (acceleration of free fall = 10 m/s\textsuperscript{2}).
+        \end{itemize}
+
+        \vspace{7mm}
+        {\bfseries INFORMATION}
+        \begin{itemize}[leftmargin=5mm,itemsep=0mm,topsep=0.5mm,parsep=0mm,partopsep=0mm]
+          \item The total mark for this paper is \exammarks.
+          \item The number of marks for each question or part question is shown in brackets [\hspace{2mm}].
+        \end{itemize}
+      \end{minipage}
+    };
+
+    \draw ([xshift=20mm,yshift=-257mm]current page.north west) -- ([xshift=187mm,yshift=-257mm]current page.north west);
+    \node[anchor=north,font=\small] at ([xshift=103.5mm,yshift=-259mm]current page.north west)
+      {This document has \pageref{LastPage} pages. Any blank pages are indicated.};
+    \node[anchor=north west,font=\small] at ([xshift=20mm,yshift=-270mm]current page.north west)
+      {DC (PRACTICE) 000000/1};
+    \node[anchor=north west,font=\small] at ([xshift=20mm,yshift=-274mm]current page.north west)
+      {\copyrightline};
+    \node[anchor=north east,font=\bfseries] at ([xshift=187mm,yshift=-274mm]current page.north west)
+      {[Turn over};
+  \end{tikzpicture}
+  \null
+  \newpage
+}
+
+\newcounter{question}
+\newlength{\qnumberwidth}
+\newlength{\partlabelwidth}
+\newlength{\subpartlabelwidth}
+\newlength{\questiontextwidth}
+\newlength{\parttextwidth}
+\setlength{\qnumberwidth}{8mm}
+\setlength{\partlabelwidth}{8mm}
+\setlength{\subpartlabelwidth}{8mm}
+\setlength{\questiontextwidth}{\dimexpr\linewidth-\qnumberwidth\relax}
+\setlength{\parttextwidth}{\dimexpr\linewidth-\qnumberwidth-\partlabelwidth\relax}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{P}[1]{>{\arraybackslash}p{#1}}
+
+\newcommand{\question}[2]{%
+  \refstepcounter{question}
+  \vspace{2mm}
+  \begin{tabular}{@{}L{\qnumberwidth}@{}L{\questiontextwidth}@{}}
+    \textbf{\thequestion} & #1
+  \end{tabular}
+  \par\vspace{2mm}
+  \def\questiontotal{#2}
+}
+
+\newcommand{\qtext}[1]{%
+  \par\vspace{2mm}
+  \begin{tabular}{@{}L{\qnumberwidth}@{}L{\questiontextwidth}@{}}
+    & #1
+  \end{tabular}
+  \par
+}
+
+\newcommand{\totalmarks}{%
+  \par\vspace{1mm}\hfill [Total: \questiontotal]\par
+}
+
+\newcommand{\partlabel}[1]{\textbf{(#1)}}
+\newcommand{\subpartlabel}[1]{\textbf{(#1)}}
+
+\newcommand{\partquestion}[2]{%
+  \par\vspace{2.5mm}
+  \begin{tabular}{@{}L{\qnumberwidth}@{}L{\partlabelwidth}@{}L{\parttextwidth}@{}}
+    & \partlabel{#1} & #2
+  \end{tabular}
+  \par\vspace{1.5mm}
+}
+
+\newcommand{\parttext}[1]{%
+  \par\vspace{1.5mm}
+  \begin{tabular}{@{}L{\qnumberwidth}@{}L{\partlabelwidth}@{}L{\parttextwidth}@{}}
+    & & #1
+  \end{tabular}
+  \par
+}
+
+\newcommand{\partsubquestion}[3]{%
+  \par\vspace{2.5mm}
+  \begin{tabular}{@{}L{\qnumberwidth}@{}L{\partlabelwidth}@{}L{\subpartlabelwidth}@{}L{\dimexpr\parttextwidth-\subpartlabelwidth\relax}@{}}
+    & \partlabel{#1} & \subpartlabel{#2} & #3
+  \end{tabular}
+  \par\vspace{1.5mm}
+}
+
+\newcommand{\subpartquestion}[2]{%
+  \par\vspace{1.5mm}
+  \begin{tabular}{@{}L{\qnumberwidth}@{}L{\partlabelwidth}@{}L{\subpartlabelwidth}@{}L{\dimexpr\parttextwidth-\subpartlabelwidth\relax}@{}}
+    & & \subpartlabel{#1} & #2
+  \end{tabular}
+  \par\vspace{1.5mm}
+}
+
+\newcommand{\subparttext}[1]{%
+  \par\vspace{1.5mm}
+  \begin{tabular}{@{}L{\qnumberwidth}@{}L{\partlabelwidth}@{}L{\subpartlabelwidth}@{}L{\dimexpr\parttextwidth-\subpartlabelwidth\relax}@{}}
+    & & & #1
+  \end{tabular}
+  \par
+}
+
+\newcommand{\working}[1][24mm]{\vspace{#1}}
+
+\newcommand{\answerline}[1][110mm]{%
+  \makebox[#1]{\leaders\hbox to 0.45em{\hss\raisebox{-0.45ex}{.}\hss}\hfill\kern0pt}
+}
+
+\newcommand{\answer}[4][70mm]{%
+  \par\hfill #2 = \answerline[#1]\ #3\ [#4]\par
+}
+
+\newcommand{\marksright}[1]{\hfill [#1]\par}
+
+\newcommand{\markinline}[1]{\hfill [#1]}
+
+\newcommand{\writtenanswer}[3][\dimexpr\linewidth-\qnumberwidth-\partlabelwidth-10mm\relax]{%
+  \par\vspace{1mm}
+  \noindent\hspace*{\dimexpr\qnumberwidth+\partlabelwidth\relax}#2\answerline[#1]\ [#3]%
+  \par
+}
+
+\newcommand{\writtenline}[2][\dimexpr\linewidth-\qnumberwidth-\partlabelwidth-2mm\relax]{%
+  \par\vspace{1mm}
+  \noindent\hspace*{\dimexpr\qnumberwidth+\partlabelwidth\relax}#2\answerline[#1]%
+  \par
+}
+
+\newcommand{\shortwrittenline}[2][64mm]{%
+  \par\vspace{1mm}
+  \begin{tabular}{@{}P{\qnumberwidth}@{}P{\partlabelwidth}@{}P{\parttextwidth}@{}}
+    & & #2\answerline[#1]
+  \end{tabular}
+  \par
+}
+
+\newcommand{\shortwrittenanswer}[3][64mm]{%
+  \par\vspace{1mm}
+  \noindent\hspace*{\dimexpr\qnumberwidth+\partlabelwidth\relax}#2\answerline[#1]\hfill [#3]%
+  \par
+}
+
+\newcommand{\subpartwrittenanswer}[3][\dimexpr\linewidth-\qnumberwidth-\partlabelwidth-\subpartlabelwidth-10mm\relax]{%
+  \par\vspace{1mm}
+  \noindent\hspace*{\dimexpr\qnumberwidth+\partlabelwidth+\subpartlabelwidth\relax}#2\answerline[#1]\ [#3]%
+  \par
+}
+
+\newcommand{\subpartwrittenline}[2][\dimexpr\linewidth-\qnumberwidth-\partlabelwidth-\subpartlabelwidth-2mm\relax]{%
+  \par\vspace{1mm}
+  \noindent\hspace*{\dimexpr\qnumberwidth+\partlabelwidth+\subpartlabelwidth\relax}#2\answerline[#1]%
+  \par
+}
+
+\newcommand{\subpartshortwrittenanswer}[3][64mm]{%
+  \par\vspace{1mm}
+  \noindent\hspace*{\dimexpr\qnumberwidth+\partlabelwidth+\subpartlabelwidth\relax}#2\answerline[#1]\hfill [#3]%
+  \par
+}
+
+\newcommand{\twowrittenlines}{%
+  \par\vspace{1mm}
+  \noindent\hspace*{\dimexpr\qnumberwidth+\partlabelwidth\relax}1.\ \answerline[\dimexpr\linewidth-\qnumberwidth-\partlabelwidth-12mm\relax]\par\vspace{4mm}
+  \noindent\hspace*{\dimexpr\qnumberwidth+\partlabelwidth\relax}2.\ \answerline[\dimexpr\linewidth-\qnumberwidth-\partlabelwidth-12mm\relax]
+  \par
+}
+
+\newcommand{\answerbox}[1][28mm]{%
+  \begin{center}
+    \fbox{\begin{minipage}{\parttextwidth}\vspace{#1}\end{minipage}}
+  \end{center}
+}
+
+\newcommand{\figplaceholder}[3]{%
+  \begin{center}
+    \begin{tikzpicture}
+      \draw[gray!70] (0,0) rectangle (#1,#2);
+      \draw[gray!70] (0,0) -- (#1,#2);
+      \draw[gray!70] (0,#2) -- (#1,0);
+      \node[gray!70] at (#1/2,#2/2) {diagram area};
+    \end{tikzpicture}\\[1mm]
+    {\bfseries Fig. #3}
+  \end{center}
+}
+
+\newcommand{\blankpage}{%
+  \newpage
+  \thispagestyle{fancy}
+  \vspace*{\fill}
+  \begin{center}
+    \textbf{BLANK PAGE}
+  \end{center}
+  \vspace*{\fill}
+  \newpage
+}
+
+\begin{document}
+
+\frontpage
+
+\question{Fig. 1.1 shows an experimental arrangement used to investigate energy transfer.}{8}
+\figplaceholder{10}{4.5}{1.1}
+
+\qtext{The apparatus transfers energy to a small load.}
+
+\partsubquestion{a}{i}{State the form of useful energy gained by the load.}
+\subpartwrittenanswer{ }{1}
+
+\subpartquestion{ii}{The load has a mass of 0.45 kg and is raised through a vertical height of 1.8 m.}
+\subparttext{Calculate the useful energy transferred to the load.}
+\working[24mm]
+\answer{energy}{J}{3}
+
+\partquestion{b}{The input energy supplied to the motor is 12 J.}
+\parttext{Calculate the efficiency of the motor.}
+\working[26mm]
+\answer{efficiency}{\%}{3}
+
+\partquestion{c}{State one reason why the efficiency is less than 100\%.}
+\writtenanswer{ }{1}
+\totalmarks
+
+\newpage
+
+\question{A trolley is released from rest and moves down a slope.}{9}
+\figplaceholder{9}{3.8}{2.1}
+
+\partquestion{a}{Define acceleration.}
+\writtenline{ }
+\writtenline{ }
+\marksright{2}
+
+\partsubquestion{b}{i}{The trolley reaches a speed of 3.6 m/s after 1.2 s. Calculate its acceleration.}
+\working[25mm]
+\answer{acceleration}{m/s\textsuperscript{2}}{3}
+
+\subpartquestion{ii}{The mass of the trolley is 1.5 kg. Calculate the resultant force acting on the trolley.}
+\working[25mm]
+\answer{force}{N}{2}
+
+\partquestion{c}{Suggest two changes that would reduce the acceleration of the trolley.}
+\twowrittenlines
+\marksright{2}
+\totalmarks
+
+\newpage
+
+\question{A student investigates the resistance of a wire.}{10}
+\figplaceholder{11}{4.2}{3.1}
+
+\partquestion{a}{Complete the table headings for the measurements needed in this experiment.}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.8}
+\begin{tabular}{|p{38mm}|p{38mm}|p{38mm}|}
+\hline
+\textbf{Length of wire / cm} & & \\ \hline
+20 & & \\ \hline
+40 & & \\ \hline
+60 & & \\ \hline
+80 & & \\ \hline
+\end{tabular}
+\end{center}
+\marksright{2}
+
+\partquestion{b}{Describe how the student can use the measurements to determine the resistance of the wire.}
+\answerbox[34mm]
+\marksright{4}
+
+\partquestion{c}{State two precautions that improve the reliability of the results.}
+\twowrittenlines
+\marksright{2}
+
+\partquestion{d}{On the grid, sketch the expected shape of a graph of resistance against length for a uniform wire.}
+\begin{center}
+\begin{tikzpicture}[x=0.5cm,y=0.5cm]
+  \draw[step=0.5cm,gray!55,very thin] (0,0) grid (18,10);
+  \draw[thick,->] (0,0) -- (18.5,0) node[right] {length};
+  \draw[thick,->] (0,0) -- (0,10.5) node[above] {resistance};
+\end{tikzpicture}
+\end{center}
+\marksright{2}
+\totalmarks
+
+\blankpage
+
+\question{This page shows the structure for adding another long question. Replace this text with your own question stem.}{6}
+\partquestion{a}{Write the first part of the question here.}
+\working[18mm]
+\answer{answer}{unit}{2}
+\partquestion{b}{Write the second part of the question here.}
+\answerbox[30mm]
+\marksright{4}
+\totalmarks
+
+\end{document}

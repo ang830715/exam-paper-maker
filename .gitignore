@@ -1,0 +1,20 @@
+# LaTeX build output
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.pdf
+*.run.xml
+*.synctex.gz
+*.toc
+
+# Generated previews
+preview_*.png
+
+# Local setup/debug files
+debug.log
+test_latex_setup.*
