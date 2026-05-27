@@ -8,7 +8,7 @@ The template is designed so most users only need to edit the metadata at the top
 
 Use VS Code with the LaTeX Workshop extension.
 
-This project already has `.vscode/settings.json` configured to use MiKTeX `pdflatex` with SyncTeX:
+This project already has `.vscode/settings.json` configured to use `pdflatex` with SyncTeX:
 
 ```json
 "-synctex=1",
@@ -21,6 +21,20 @@ Useful LaTeX Workshop actions:
 - Build PDF: `Ctrl+Alt+B`
 - Sync from `.tex` cursor to PDF: `Ctrl+Alt+J`
 - Sync from PDF to `.tex`: `Ctrl+click` in the PDF preview
+
+On macOS, install MacTeX or BasicTeX, then make sure `pdflatex` is available in the terminal:
+
+```bash
+pdflatex --version
+```
+
+If VS Code cannot find `pdflatex` on Mac, open VS Code from a terminal with `code .`, or add the TeX binary directory to your shell `PATH`. For a standard MacTeX install, that is usually:
+
+```bash
+/Library/TeX/texbin
+```
+
+The `.vscode/settings.json` file uses the generic command name `pdflatex`, so the same project settings should work on both Windows and Mac as long as `pdflatex` is on `PATH`.
 
 ## Paper Metadata
 
@@ -37,7 +51,21 @@ Edit these commands near the top of the `.tex` file:
 \newcommand{\examfooter}{0625/42/PRACTICE}
 ```
 
-Do not edit the cover-page TikZ layout unless changing the visual design of the front page.
+Do not edit the cover-page layout helpers unless changing the visual design of the front page.
+
+## Cover Page Helpers
+
+The cover page uses normal LaTeX layout, with small TikZ drawings only for the candidate-number boxes and logo approximation. This is more stable than drawing the whole first page as an overlay.
+
+Important helper commands:
+
+```latex
+\nameentry
+\candidateentry{CENTRE}{\candidateboxes{5}}
+\candidateentry{CANDIDATE}{\candidateboxes{4}}
+```
+
+The candidate-number boxes have a custom midpoint baseline so the labels are vertically centered against the boxes. If the front-page labels look misaligned after editing, check `\candidateboxes` before changing random vertical spaces.
 
 ## Basic Question Structure
 
@@ -333,4 +361,3 @@ Correct:
 ```latex
 \writtenanswer{ }{2}
 ```
-

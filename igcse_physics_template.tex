@@ -34,7 +34,8 @@
 \fancyfoot[R]{\ifnum\value{page}>1\ifodd\value{page}{\small [Turn over}\fi\fi}
 
 \newcommand{\candidateboxes}[1]{%
-  \begin{tikzpicture}[baseline=-0.6ex,x=1mm,y=1mm]
+  \begin{tikzpicture}[baseline=(boxbase.base),x=1mm,y=1mm]
+    \node[inner sep=0pt,outer sep=0pt] (boxbase) at (0,6.25) {};
     \foreach \x in {0,...,#1} {
       \draw (\x*8.5,0) -- (\x*8.5,12.5);
     }
@@ -43,94 +44,98 @@
 }
 
 \newcommand{\namebox}{\fbox{\rule{0pt}{12mm}\hspace{139mm}}}
+\newcommand{\candidateentry}[2]{%
+  \begin{tabular}[t]{@{}m{24mm}@{}m{45mm}@{}}
+    \begin{tabular}{@{}l@{}}#1\\NUMBER\end{tabular} & #2
+  \end{tabular}%
+}
+\newcommand{\nameentry}{%
+  \begin{tabular}{@{}m{25mm}@{}m{\dimexpr\linewidth-25mm\relax}@{}}
+    \begin{tabular}{@{}l@{}}CANDIDATE\\NAME\end{tabular} & \namebox
+  \end{tabular}%
+}
 
 \newcommand{\frontpage}{%
   \thispagestyle{empty}
-  \begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
-    \node[anchor=north west] at ([xshift=92mm,yshift=-9mm]current page.north west) {%
-      \begin{minipage}{78mm}
-        \begin{tabular}{@{}c@{\hspace{2mm}}l@{}}
-          \begin{tikzpicture}[x=1mm,y=1mm,baseline=5mm]
-            \draw[line width=0.35mm] (0,9) -- (8,9) -- (8,2) -- (4,0) -- (0,2) -- cycle;
-            \draw[line width=0.25mm] (4,9) -- (4,0);
-            \draw[line width=0.25mm] (0,5.5) -- (8,5.5);
-            \draw[line width=0.25mm] (2,9) -- (2,1);
-            \draw[line width=0.25mm] (6,9) -- (6,1);
-          \end{tikzpicture} &
-          \begin{tabular}{@{}l@{}}
-            {\Large\bfseries Cambridge Assessment}\\[-1mm]
-            {\Large International Education}
-          \end{tabular}
-        \end{tabular}
-      \end{minipage}
-    };
+  \vspace*{-7mm}
+  \begin{flushright}
+    \begin{tabular}{@{}c@{\hspace{2mm}}l@{}}
+      \begin{tikzpicture}[x=1mm,y=1mm,baseline=5mm]
+        \draw[line width=0.35mm] (0,9) -- (8,9) -- (8,2) -- (4,0) -- (0,2) -- cycle;
+        \draw[line width=0.25mm] (4,9) -- (4,0);
+        \draw[line width=0.25mm] (0,5.5) -- (8,5.5);
+        \draw[line width=0.25mm] (2,9) -- (2,1);
+        \draw[line width=0.25mm] (6,9) -- (6,1);
+      \end{tikzpicture} &
+      \begin{tabular}{@{}l@{}}
+        {\Large\bfseries Cambridge Assessment}\\[-1mm]
+        {\Large International Education}
+      \end{tabular}
+    \end{tabular}
+  \end{flushright}
 
-    \node[anchor=north west,font=\LARGE\bfseries] at ([xshift=20mm,yshift=-35mm]current page.north west)
-      {Cambridge IGCSE\textsuperscript{TM}};
+  \vspace{7mm}
+  {\LARGE\bfseries Cambridge IGCSE\textsuperscript{TM}}\par
 
-    \node[anchor=north west,align=left] at ([xshift=20mm,yshift=-50mm]current page.north west)
-      {CANDIDATE\\NAME};
-    \node[anchor=north west] at ([xshift=45mm,yshift=-48mm]current page.north west) {\namebox};
+  \vspace{7mm}
+  \nameentry
 
-    \node[anchor=north west,align=left] at ([xshift=20mm,yshift=-66mm]current page.north west)
-      {CENTRE\\NUMBER};
-    \node[anchor=north west] at ([xshift=45mm,yshift=-64mm]current page.north west) {\candidateboxes{5}};
-    \node[anchor=north west,align=left] at ([xshift=130mm,yshift=-66mm]current page.north west)
-      {CANDIDATE\\NUMBER};
-    \node[anchor=north west] at ([xshift=153mm,yshift=-64mm]current page.north west) {\candidateboxes{4}};
+  \vspace{3mm}
+  \begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}l@{}}
+    \candidateentry{CENTRE}{\candidateboxes{5}} &
+    \candidateentry{CANDIDATE}{\candidateboxes{4}}
+  \end{tabular*}
 
-    \draw ([xshift=20mm,yshift=-79mm]current page.north west) -- ([xshift=187mm,yshift=-79mm]current page.north west);
-    \node[anchor=north west] at ([xshift=20mm,yshift=-81mm]current page.north west) {%
-      \begin{minipage}{167mm}
-        \small
-        \begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}r@{}}
-          {\bfseries \examtitle} & {\bfseries \examcode}\\[2mm]
-          \papername & {\bfseries \examseason}\\[2mm]
-          & {\bfseries \examtime}
-        \end{tabular*}
+  \vspace{4mm}
+  \hrule
+  \vspace{2mm}
+  \small
+  \begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}r@{}}
+    {\bfseries \examtitle} & {\bfseries \examcode}\\[2mm]
+    \papername & {\bfseries \examseason}\\[2mm]
+    & {\bfseries \examtime}
+  \end{tabular*}
 
-        \vspace{5.5mm}
-        You must answer on the question paper.
+  \vspace{5.5mm}
+  You must answer on the question paper.
 
-        \vspace{4mm}
-        No additional materials are needed.
+  \vspace{4mm}
+  No additional materials are needed.
 
-        \vspace{3.5mm}
-        \hrule
-        \vspace{2mm}
-        {\bfseries INSTRUCTIONS}
-        \begin{itemize}[leftmargin=5mm,itemsep=0mm,topsep=0.5mm,parsep=0mm,partopsep=0mm]
-          \item Answer \textbf{all} questions.
-          \item Use a black or dark blue pen. You may use an HB pencil for any diagrams or graphs.
-          \item Write your name, centre number and candidate number in the boxes at the top of the page.
-          \item Write your answer to each question in the space provided.
-          \item Do \textbf{not} use an erasable pen or correction fluid.
-          \item Do \textbf{not} write on any bar codes.
-          \item You may use a calculator.
-          \item You should show all your working and use appropriate units.
-          \item Take the weight of 1.0 kg to be 10 N (acceleration of free fall = 10 m/s\textsuperscript{2}).
-        \end{itemize}
+  \vspace{3.5mm}
+  \hrule
+  \vspace{2mm}
+  {\bfseries INSTRUCTIONS}
+  \begin{itemize}[leftmargin=5mm,itemsep=0mm,topsep=0.5mm,parsep=0mm,partopsep=0mm]
+    \item Answer \textbf{all} questions.
+    \item Use a black or dark blue pen. You may use an HB pencil for any diagrams or graphs.
+    \item Write your name, centre number and candidate number in the boxes at the top of the page.
+    \item Write your answer to each question in the space provided.
+    \item Do \textbf{not} use an erasable pen or correction fluid.
+    \item Do \textbf{not} write on any bar codes.
+    \item You may use a calculator.
+    \item You should show all your working and use appropriate units.
+    \item Take the weight of 1.0 kg to be 10 N (acceleration of free fall = 10 m/s\textsuperscript{2}).
+  \end{itemize}
 
-        \vspace{7mm}
-        {\bfseries INFORMATION}
-        \begin{itemize}[leftmargin=5mm,itemsep=0mm,topsep=0.5mm,parsep=0mm,partopsep=0mm]
-          \item The total mark for this paper is \exammarks.
-          \item The number of marks for each question or part question is shown in brackets [\hspace{2mm}].
-        \end{itemize}
-      \end{minipage}
-    };
+  \vspace{7mm}
+  {\bfseries INFORMATION}
+  \begin{itemize}[leftmargin=5mm,itemsep=0mm,topsep=0.5mm,parsep=0mm,partopsep=0mm]
+    \item The total mark for this paper is \exammarks.
+    \item The number of marks for each question or part question is shown in brackets [\hspace{2mm}].
+  \end{itemize}
 
-    \draw ([xshift=20mm,yshift=-257mm]current page.north west) -- ([xshift=187mm,yshift=-257mm]current page.north west);
-    \node[anchor=north,font=\small] at ([xshift=103.5mm,yshift=-259mm]current page.north west)
-      {This document has \pageref{LastPage} pages. Any blank pages are indicated.};
-    \node[anchor=north west,font=\small] at ([xshift=20mm,yshift=-270mm]current page.north west)
-      {DC (PRACTICE) 000000/1};
-    \node[anchor=north west,font=\small] at ([xshift=20mm,yshift=-274mm]current page.north west)
-      {\copyrightline};
-    \node[anchor=north east,font=\bfseries] at ([xshift=187mm,yshift=-274mm]current page.north west)
-      {[Turn over};
-  \end{tikzpicture}
-  \null
+  \vfill
+  \hrule
+  \vspace{2mm}
+  \begin{center}
+    This document has \pageref{LastPage} pages. Any blank pages are indicated.
+  \end{center}
+  \vspace{5mm}
+  \begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}r@{}}
+    DC (PRACTICE) 000000/1 & {\bfseries [Turn over}\\[4mm]
+    \copyrightline &
+  \end{tabular*}
   \newpage
 }
 
