@@ -241,6 +241,21 @@
   \par\hfill #2 = \answerline[#1]\ #3\ [#4]\par
 }
 
+\newcommand{\rightanswerline}[2][70mm]{%
+  \par\vspace{2mm}
+  \hfill #2\ \answerline[#1]\par
+}
+
+\newcommand{\rightanswermark}[1]{%
+  \par\vspace{-1mm}\hfill [#1]\par
+}
+
+\newcommand{\rightanswer}[3][70mm]{%
+  \rightanswerline[#1]{#2}%
+  \rightanswermark{#3}%
+  \par
+}
+
 \newcommand{\marksright}[1]{\hfill [#1]\par}
 
 \newcommand{\markinline}[1]{\hfill [#1]}
@@ -423,9 +438,10 @@
 
 \parttext{Draw a scale diagram to determine the canoe's resultant velocity and state the scale you used.}
 \working[70mm]
-\answer[80mm]{scale}{}{1}
-\par\hfill magnitude of resultant velocity = \answerline[58mm]\ [2]\par
-\par\vspace{2mm}\hfill direction of resultant velocity = \answerline[52mm]\ [1]\par
+\rightanswerline[80mm]{scale}
+\rightanswerline[80mm]{magnitude of resultant velocity}
+\rightanswerline[80mm]{direction of resultant velocity (angle from the river bank)}
+\rightanswermark{4}
 
 \partquestion{b}{Explain why the resultant velocity is not in the same direction as the canoe points.}
 \writtenline{ }

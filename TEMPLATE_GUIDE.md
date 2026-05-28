@@ -255,6 +255,28 @@ If the answer line needs a different length:
 \answer[80mm]{time}{s}{2}
 ```
 
+## Right-Aligned Result Answer Groups
+
+For grouped result answers that match the Cambridge style, use right-aligned answer lines and one combined mark below the group:
+
+```latex
+\rightanswerline[80mm]{scale}
+\rightanswerline[80mm]{magnitude of resultant velocity}
+\rightanswerline[80mm]{direction of resultant velocity (angle from the river bank)}
+\rightanswermark{4}
+```
+
+This produces a right-aligned group like:
+
+```text
+                                 scale ............................
+        magnitude of resultant velocity ............................
+direction of resultant velocity (angle from the river bank) ........
+                                                           [4]
+```
+
+Use `\rightanswerline[length]{label}` when several related answer prompts share one mark allocation. Use `\rightanswer[label length]{label}{marks}` only for a single right-aligned answer with its own mark.
+
 ## Working Space
 
 Use vertical space for calculations:
@@ -365,6 +387,7 @@ When generating new questions, follow these rules:
 - Use subpart answer helpers for nested subparts.
 - Use full written answer lines for ordinary written responses.
 - Use short answer lines only for short one-word or phrase answers.
+- Use `\rightanswerline` with `\rightanswermark` for grouped right-aligned result answers.
 - Put marks at the right using helper commands, not manual spaces.
 - Do not manually type many dots. Always use the answer-line commands.
 - Use `\working[...]` before calculation answer lines.

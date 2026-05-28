@@ -2,7 +2,7 @@
   "latex-workshop.latex.tools": [
     {
       "name": "pdflatex",
-      "command": "/Library/TeX/texbin/pdflatex",
+      "command": "pdflatex",
       "args": [
         "-synctex=1",
         "-interaction=nonstopmode",
@@ -15,6 +15,7 @@
     {
       "name": "pdflatex",
       "tools": [
+        "pdflatex",
         "pdflatex"
       ]
     }
@@ -22,5 +23,18 @@
   "latex-workshop.latex.recipe.default": "pdflatex",
   "latex-workshop.latex.synctex.afterBuild.enabled": true,
   "latex-workshop.view.pdf.viewer": "tab",
-  "latex-workshop.latex.outDir": "%DIR%"
+  "latex-workshop.latex.outDir": "%DIR%",
+  "latex-workshop.latex.clean.method": "glob",
+  "latex-workshop.latex.clean.fileTypes": [
+    "*.aux",
+    "*.bbl",
+    "*.bcf",
+    "*.blg",
+    "*.fdb_latexmk",
+    "*.fls",
+    "*.log",
+    "*.out",
+    "*.run.xml",
+    "*.toc"
+  ]
 }
