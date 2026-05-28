@@ -28,13 +28,13 @@ On macOS, install MacTeX or BasicTeX, then make sure `pdflatex` is available in 
 pdflatex --version
 ```
 
-For this Mac workspace, `.vscode/settings.json` is pinned to the standard MacTeX executable:
+On Windows, install MiKTeX and make sure `pdflatex` is available in PowerShell:
 
-```bash
-/Library/TeX/texbin
+```powershell
+pdflatex --version
 ```
 
-If you move the project back to Windows, change the VS Code tool command from `/Library/TeX/texbin/pdflatex` to `pdflatex`, or to the full Windows path for your TeX installation.
+The workspace settings use the portable command name `pdflatex`, so the same `.vscode/settings.json` can be shared through Git between macOS and Windows. Avoid committing absolute paths such as `/Library/TeX/texbin/pdflatex` or a Windows user-directory path.
 
 The build uses `-synctex=1`, so source/PDF syncing works after a successful build.
 
@@ -128,6 +128,293 @@ Use `\qtext{...}` for normal text under the main question, especially after a fi
 ```
 
 This keeps the text aligned with the main question text column. Figure numbers are generated from the current question number, so this example becomes `Fig. 1.1` if it is in question 1 and `Fig. 3.1` if the question is moved to question 3.
+
+## Multiple Choice Questions
+
+Paper 2 multiple-choice questions use a different body layout from Paper 4 theory questions. Keep the existing cover page, then use the MCQ helpers for the question body.
+
+Start each MCQ with:
+
+```latex
+\mcquestion{Which instrument is most suitable to determine the volume of a small irregularly shaped stone?}
+```
+
+Use `\mcqtext{...}` for continuation text under the same question:
+
+```latex
+\mcquestion{A steel ball is dropped from the top floor of a building. Air resistance can be ignored.}
+\mcqtext{Which statement describes the motion of the ball?}
+```
+
+### Plain Statement Choices
+
+Use this for ordinary A-D statement choices:
+
+```latex
+\mcqchoices
+  {The ball falls with constant acceleration.}
+  {The ball falls with constant speed.}
+  {The ball falls with decreasing speed.}
+  {The ball falls with increasing acceleration.}
+```
+
+This creates a vertical A-D list aligned like Paper 2.
+
+### Short Horizontal Choices
+
+Use this when all choices are short values or short phrases:
+
+```latex
+\mcqchoiceswide
+  {14 m/s\textsuperscript{2}}
+  {24 m/s\textsuperscript{2}}
+  {28 m/s\textsuperscript{2}}
+  {34 m/s\textsuperscript{2}}
+```
+
+This matches the compact one-line layout used for many numerical answers.
+
+### Diagrams In The Question Stem
+
+For MCQ diagrams copied from a real paper, do not redraw the picture in TikZ. Crop the picture from the source PDF, save it in `assets/mcq/`, and include it with `\mcqimage`.
+
+```latex
+\mcquestion{The diagram shows a velocity-time graph for an object which is accelerating.}
+\mcqimage[82mm]{assets/mcq/q03_velocity_time_graph.png}
+\mcqtext{What is the acceleration of the object?}
+```
+
+Use this for graphs, rays, circuits, apparatus diagrams, and any single figure that belongs to the question stem.
+
+The optional width controls the printed size. If omitted, the image uses the full question-text width:
+
+```latex
+\mcqimage{assets/mcq/my_diagram.png}
+```
+
+### Cropping MCQ Images From A PDF
+
+The current MCQ examples use images cropped from `0625_s25_qp_22.pdf`. The assets live in:
+
+```text
+assets/mcq/
+```
+
+Current examples:
+
+```text
+q03_velocity_time_graph.png
+q04_compression_diagrams.png
+q07_cricket_bat.png
+q18_wave_amplitude.png
+q21_refraction.png
+q22_lens_image.png
+q29_potential_divider.png
+q32_magnetic_field_choices.png
+```
+
+On Windows or macOS, use Poppler's `pdftoppm` to crop a diagram from a PDF:
+
+```powershell
+pdftoppm -f 2 -l 2 -png -r 200 -x 450 -y 1005 -W 725 -H 610 -singlefile 0625_s25_qp_22.pdf assets\mcq\q03_velocity_time_graph
+```
+
+On macOS or Linux, use forward slashes in the output path:
+
+```bash
+pdftoppm -f 2 -l 2 -png -r 200 -x 450 -y 1005 -W 725 -H 610 -singlefile 0625_s25_qp_22.pdf assets/mcq/q03_velocity_time_graph
+```
+
+The important options are:
+
+- `-f` and `-l`: first and last page to render
+- `-r 200`: image resolution
+- `-x` and `-y`: top-left corner of the crop, in pixels
+- `-W` and `-H`: crop width and height, in pixels
+- `-singlefile`: output one file without an added page number
+
+After cropping, include the image:
+
+```latex
+\mcqimage[82mm]{assets/mcq/q03_velocity_time_graph.png}
+```
+
+Crop diagrams tightly enough to avoid surrounding question text, but leave a little white space so labels and arrows are not clipped.
+
+### Future Work: Repeatable Crop Workflow
+
+The current crop commands work, but they require trial and error because the crop box is written as raw pixel coordinates. A better future workflow for Codex is:
+
+1. Render each source PDF page to a preview image.
+2. Add a coordinate grid overlay to the preview.
+3. Record each diagram crop in a manifest file, for example `assets/mcq/crops.json`.
+4. Run one script to regenerate all cropped assets from the manifest.
+
+Example manifest idea:
+
+```json
+{
+  "q03_velocity_time_graph": {
+    "pdf": "0625_s25_qp_22.pdf",
+    "page": 2,
+    "x": 450,
+    "y": 1005,
+    "w": 725,
+    "h": 610,
+    "latexWidth": "82mm"
+  }
+}
+```
+
+Prefer cropped PDF assets when possible, because vector diagrams stay sharper in the final LaTeX output:
+
+```latex
+\mcqimage[82mm]{assets/mcq/q03_velocity_time_graph.pdf}
+```
+
+Use PNG when the source crop/export workflow is simpler or the original figure is already raster-like.
+
+### Equation Choices
+
+Use vertical choices for fractions or equations unless they are very short:
+
+```latex
+\mcqchoices
+  {$h=\dfrac{9.8}{2 \times 5.0^2}$}
+  {$h=\dfrac{5.0^2 \times 2}{9.8}$}
+  {$h=\dfrac{5.0^2}{2 \times 9.8}$}
+  {$h=\dfrac{2 \times 9.8}{5.0^2}$}
+```
+
+For compact equation choices that fit comfortably on one row, use `\mcqchoiceswide`.
+
+### Table Choices
+
+Use `mcqtable` for answer choices that are rows in a table:
+
+```latex
+\begin{mcqtable}{|c|c|c|}
+\hline
+ & mass & weight \\ \hline
+\textbf{A} & increases & increases \\ \hline
+\textbf{B} & increases & no change \\ \hline
+\textbf{C} & no change & increases \\ \hline
+\textbf{D} & no change & no change \\ \hline
+\end{mcqtable}
+```
+
+For wider tables, choose suitable `p{...}` columns:
+
+```latex
+\begin{mcqtable}{|c|p{32mm}|p{78mm}|}
+\hline
+ & type of wave & direction of vibration \\ \hline
+\textbf{A} & longitudinal & parallel to the direction of travel of the wavefront \\ \hline
+\textbf{B} & longitudinal & perpendicular to the direction of travel of the wavefront \\ \hline
+\textbf{C} & transverse & parallel to the direction of travel of the wavefront \\ \hline
+\textbf{D} & transverse & perpendicular to the direction of travel of the wavefront \\ \hline
+\end{mcqtable}
+```
+
+### Diagram Choices
+
+When the four options are diagrams from a past paper, crop the whole answer-choice diagram block as one image. This keeps the spacing, labels, key, and linework faithful to the original paper:
+
+```latex
+\mcquestion{When there is an electric current in a long straight wire, a magnetic field is created around the wire.}
+\mcqtext{Which diagram shows the correct pattern and direction of magnetic field lines around a long straight wire carrying current into the page?}
+\mcqimage[118mm]{assets/mcq/q32_magnetic_field_choices.png}
+```
+
+Use `\mcqchoicegrid` only when you are creating original diagram choices yourself.
+
+### Examples Based On 0625_s25_qp_22
+
+These examples show how to express common Paper 2 layouts using the template helpers. They are based on the real May/June 2025 Paper 2 layouts, but are kept as short formatting examples.
+
+Plain statement choices:
+
+```latex
+\mcquestion{A ball is dropped from a building. Air resistance is negligible.}
+\mcqtext{Which statement describes the motion of the ball?}
+\mcqchoices
+  {It has uniform acceleration.}
+  {It falls at constant speed.}
+  {Its speed decreases.}
+  {Its acceleration increases.}
+```
+
+Short numerical choices on one row:
+
+```latex
+\mcquestion{A mass is pulled down on a vertical spring and then released.}
+\mcqtext{What is the magnitude of the initial acceleration?}
+\mcqchoiceswide
+  {14 m/s\textsuperscript{2}}
+  {24 m/s\textsuperscript{2}}
+  {28 m/s\textsuperscript{2}}
+  {34 m/s\textsuperscript{2}}
+```
+
+Table choices:
+
+```latex
+\mcquestion{A flexible material containing pockets of air is compressed.}
+\mcqtext{What happens to its mass and weight?}
+\begin{mcqtable}{|c|c|c|}
+\hline
+ & mass & weight \\ \hline
+\textbf{A} & increases & increases \\ \hline
+\textbf{B} & increases & no change \\ \hline
+\textbf{C} & no change & increases \\ \hline
+\textbf{D} & no change & no change \\ \hline
+\end{mcqtable}
+```
+
+Equation choices:
+
+```latex
+\mcquestion{A stone is thrown vertically upwards at 5.0 m/s.}
+\mcqtext{Which equation gives the maximum height $h$ reached by the stone?}
+\mcqchoices
+  {$h=\dfrac{9.8}{2 \times 5.0^2}$}
+  {$h=\dfrac{5.0^2 \times 2}{9.8}$}
+  {$h=\dfrac{5.0^2}{2 \times 9.8}$}
+  {$h=\dfrac{2 \times 9.8}{5.0^2}$}
+```
+
+Diagram in the question stem:
+
+```latex
+\mcquestion{Which arrow on the graph shows the amplitude of the wave?}
+\mcqimage[110mm]{assets/mcq/q18_wave_amplitude.png}
+```
+
+For this style, the answer letters are already on the diagram, so no separate `\mcqchoices` block is needed.
+
+Diagram choices:
+
+```latex
+\mcquestion{A current flows into the page through a long straight wire.}
+\mcqtext{Which diagram shows the magnetic field pattern?}
+\mcqimage[118mm]{assets/mcq/q32_magnetic_field_choices.png}
+```
+
+This is preferred for past-paper-based examples because it uses the original figure block.
+
+### Current Template Body
+
+The current `igcse_physics_template.tex` body shows the Paper 2 MCQ examples first. The Paper 4 structured-question examples are still kept in the same file, but they are temporarily disabled while the MCQ workflow is being refined:
+
+```latex
+% Structured question examples are kept below, but temporarily disabled while
+% the Paper 2 multiple-choice workflow is being refined.
+\iffalse
+...
+\fi
+```
+
+To show the structured examples again, remove or comment out the `\iffalse` and matching `\fi`.
 
 ## Parts: `(a)`, `(b)`, `(c)`
 
