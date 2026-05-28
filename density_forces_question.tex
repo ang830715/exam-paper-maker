@@ -1,11 +1,10 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[12pt,a4paper]{article}
 
 \usepackage[a4paper,left=18mm,right=18mm,top=17mm,bottom=17mm]{geometry}
-\usepackage{helvet}
+\usepackage[scaled=0.95]{helvet}
 \usepackage{array}
 \usepackage{enumitem}
 \usepackage{fancyhdr}
-\usepackage{graphicx}
 \usepackage{lastpage}
 \usepackage{tikz}
 \usepackage{xcolor}
@@ -24,7 +23,7 @@
 \newcommand{\papername}{Paper 4 Theory (Extended)}
 \newcommand{\examseason}{Practice Paper}
 \newcommand{\examtime}{1 hour 15 minutes}
-\newcommand{\exammarks}{80}
+\newcommand{\exammarks}{10}
 \newcommand{\examyear}{2026}
 \newcommand{\examfooter}{0625/42/PRACTICE}
 \newcommand{\copyrightline}{\copyright\ Practice paper}
@@ -69,14 +68,14 @@
         \draw[line width=0.25mm] (6,9) -- (6,1);
       \end{tikzpicture} &
       \begin{tabular}{@{}l@{}}
-        {\huge\bfseries Cambridge Assessment}\\[-1mm]
-        {\huge International Education}
+        {\Large\bfseries Cambridge Assessment}\\[-1mm]
+        {\Large International Education}
       \end{tabular}
     \end{tabular}
   \end{flushright}
 
   \vspace{7mm}
-  {\Huge\bfseries Cambridge IGCSE\textsuperscript{TM}}\par
+  {\LARGE\bfseries Cambridge IGCSE\textsuperscript{TM}}\par
 
   \vspace{7mm}
   \nameentry
@@ -141,8 +140,6 @@
 }
 
 \newcounter{question}
-\newcounter{figureinquestion}[question]
-\renewcommand{\thefigureinquestion}{\thequestion.\arabic{figureinquestion}}
 \newlength{\qnumberwidth}
 \newlength{\partlabelwidth}
 \newlength{\subpartlabelwidth}
@@ -151,9 +148,9 @@
 \setlength{\qnumberwidth}{8mm}
 \setlength{\partlabelwidth}{8mm}
 \setlength{\subpartlabelwidth}{8mm}
-\setlength{\questiontextwidth}{\dimexpr\textwidth-\qnumberwidth\relax}
-\setlength{\parttextwidth}{\dimexpr\textwidth-\qnumberwidth-\partlabelwidth\relax}
-\newcolumntype{L}[1]{>{\arraybackslash}p{#1}}
+\setlength{\questiontextwidth}{\dimexpr\linewidth-\qnumberwidth\relax}
+\setlength{\parttextwidth}{\dimexpr\linewidth-\qnumberwidth-\partlabelwidth\relax}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newcolumntype{P}[1]{>{\arraybackslash}p{#1}}
 
 \newcommand{\question}[2]{%
@@ -164,16 +161,6 @@
   \end{tabular}
   \par\vspace{2mm}
   \def\questiontotal{#2}
-}
-
-\newcommand{\questionpart}[3]{%
-  \refstepcounter{question}
-  \vspace{2mm}
-  \begin{tabular}{@{}L{\qnumberwidth}@{}L{\partlabelwidth}@{}L{\parttextwidth}@{}}
-    \textbf{\thequestion} & \partlabel{#1} & #2
-  \end{tabular}
-  \par\vspace{2mm}
-  \def\questiontotal{#3}
 }
 
 \newcommand{\qtext}[1]{%
@@ -302,33 +289,16 @@
   \end{center}
 }
 
-\newcommand{\figref}[1]{\ref{#1}}
-
-\newcommand{\maybefiglabel}[1]{%
-  \if\relax\detokenize{#1}\relax
-  \else
-    \label{#1}%
-  \fi
-}
-
-\newcommand{\examfigure}[2]{%
-  \refstepcounter{figureinquestion}%
+\newcommand{\figplaceholder}[3]{%
   \begin{center}
-    #2\\[1mm]
-    {\bfseries Fig. \thefigureinquestion}%
-    \maybefiglabel{#1}%
-  \end{center}
-}
-
-\newcommand{\figplaceholder}[3][]{%
-  \examfigure{#1}{%
     \begin{tikzpicture}
-      \draw[gray!70] (0,0) rectangle (#2,#3);
-      \draw[gray!70] (0,0) -- (#2,#3);
-      \draw[gray!70] (0,#3) -- (#2,0);
-      \node[gray!70] at (#2/2,#3/2) {diagram area};
-    \end{tikzpicture}%
-  }%
+      \draw[gray!70] (0,0) rectangle (#1,#2);
+      \draw[gray!70] (0,0) -- (#1,#2);
+      \draw[gray!70] (0,#2) -- (#1,0);
+      \node[gray!70] at (#1/2,#2/2) {diagram area};
+    \end{tikzpicture}\\[1mm]
+    {\bfseries Fig. #3}
+  \end{center}
 }
 
 \newcommand{\blankpage}{%
@@ -342,144 +312,67 @@
   \newpage
 }
 
+\newcommand{\vasefigure}{%
+  \begin{center}
+    \begin{tikzpicture}[x=1cm,y=1cm,line cap=butt,line join=round]
+      \draw[line width=0.55pt] (-2.9,0) -- (2.9,0);
+
+      \draw[line width=0.55pt] (-2.75,2.87) rectangle (2.75,3.00);
+      \draw[line width=0.55pt] (-2.10,2.63) -- (2.10,2.63) -- (2.10,2.87) -- (-2.10,2.87) -- cycle;
+      \draw[line width=0.55pt] (-1.95,2.63) -- (-2.35,0);
+      \draw[line width=0.55pt] (-1.45,2.63) -- (-2.22,0);
+      \draw[line width=0.55pt] (1.95,2.63) -- (2.35,0);
+      \draw[line width=0.55pt] (1.45,2.63) -- (2.22,0);
+
+      \draw[line width=0.62pt]
+        (-0.20,3.02)
+        .. controls (-0.44,3.18) and (-0.48,3.50) .. (-0.28,3.76)
+        .. controls (-0.14,3.93) and (-0.38,4.12) .. (-0.18,4.28)
+        -- (0.32,4.28)
+        .. controls (0.12,4.11) and (0.36,3.93) .. (0.50,3.76)
+        .. controls (0.72,3.49) and (0.61,3.14) .. (0.25,3.02)
+        .. controls (0.13,2.95) and (-0.08,2.95) .. (-0.20,3.02);
+
+      \draw[line width=0.62pt] (0,3.00) -- (0,4.68);
+      \draw[->,line width=0.62pt] (0,4.20) -- (0,4.95);
+      \draw[->,line width=0.62pt] (0,3.00) -- (0,1.02);
+      \node[left] at (-0.03,4.82) {X};
+      \node[left] at (-0.03,1.10) {Y};
+
+      \node[left] at (-1.45,3.72) {vase};
+      \draw[line width=0.45pt] (-1.36,3.62) -- (-0.38,3.35);
+    \end{tikzpicture}\\[1mm]
+    {\bfseries Fig. 1.1}
+  \end{center}
+}
+
 \begin{document}
 
 \frontpage
 
-\question{Fig. \figref{fig:electric-bicycle} shows an electrically powered bicycle.}{8}
-\examfigure{fig:electric-bicycle}{%
-  \includegraphics[
-    page=2,
-    trim=35mm 185mm 35mm 26mm,
-    clip,
-    width=120mm
-  ]{0625_s22_qp_42.pdf}%
-}
+\question{A student has a metal object.}{10}
 
-\qtext{The battery can deliver a power of 600 W for 60 min.}
-
-\partsubquestion{a}{i}{Calculate the energy, in joules, stored in the battery when fully charged.}
-\working[26mm]
-\answer{energy}{J}{3}
-
-\subpartquestion{ii}{State the form of energy stored by the battery.}
+\partsubquestion{a}{i}{The student measures the mass of the object.}
+\subparttext{State the name of the equipment used to measure the mass.}
 \subpartwrittenanswer{ }{1}
 
-\partquestion{b}{The bicycle has a motor with an electrical input power of 250 W.}
-\parttext{Calculate the time for which the battery can power the bicycle.}
-\working[26mm]
-\answer{time}{s}{2}
+\subpartquestion{ii}{The mass of the metal object is 1260 g. The volume of the metal is 150 cm\textsuperscript{3}.}
+\subparttext{Calculate the density of the metal. Include the unit.}
+\working[34mm]
+\par\hfill density = \answerline[58mm]\ [4]\par
 
-\partquestion{c}{State two environmental benefits of using an electrically powered bicycle instead of a small motorcycle.}
-\twowrittenlines
-\marksright{2}
-\totalmarks
+\subpartquestion{iii}{The mass of the metal object is given in grams. State the mass in kg.}
+\working[19mm]
+\par\hfill mass = \answerline[55mm]\ kg\ [1]\par
 
-\newpage
-
-\question{Fig. \figref{fig:pulley-bench} shows two objects connected by a cord passing over a pulley.}{9}
-\examfigure{fig:pulley-bench}{%
-  \includegraphics[
-    page=3,
-    trim=48mm 211mm 43mm 36mm,
-    clip,
-    width=95mm
-  ]{0625_s22_qp_42.pdf}%
-}
-
-\qtext{The 2.0 kg object is released from rest and accelerates at 4.0 m/s\textsuperscript{2}.}
-
-\partquestion{a}{Calculate the resultant force acting on the 2.0 kg object.}
-\working[25mm]
-\answer{force}{N}{2}
-
-\partquestion{b}{Calculate the upward force exerted by the cord on the 3.0 kg object.}
-\working[28mm]
-\answer{force}{N}{3}
-
-\partsubquestion{c}{i}{The objects have a constant acceleration.}
-\subparttext{Show that the speed of the objects 0.80 s after release is 3.2 m/s.}
-\working[24mm]
-\marksright{2}
-
-\subpartquestion{ii}{A card of width 2.0 cm passes through a beam of light at this speed. Calculate the time taken for the card to pass through the beam.}
-\working[25mm]
-\answer{time}{s}{2}
-\totalmarks
-
-\newpage
-
-\questionpart{a}{Fig. \figref{fig:river-canoe} shows water in a river moving parallel to the river bank at 4.0m/s and a canoe travelling in the river.}{8}
-\examfigure{fig:river-canoe}{%
-  \includegraphics[
-    page=4,
-    trim=25mm 181mm 25mm 31mm,
-    clip,
-    width=135mm
-  ]{0625_s22_qp_42.pdf}%
-}
-
-\parttext{The canoe travels at 2.5m/s relative to the water and heads at an angle of 38\textdegree{} to the river bank.}
-
-\parttext{Draw a scale diagram to determine the canoe's resultant velocity and state the scale you used.}
-\working[70mm]
-\answer[80mm]{scale}{}{1}
-\par\hfill magnitude of resultant velocity = \answerline[58mm]\ [2]\par
-\par\vspace{2mm}\hfill direction of resultant velocity = \answerline[52mm]\ [1]\par
-
-\partquestion{b}{Explain why the resultant velocity is not in the same direction as the canoe points.}
-\writtenline{ }
-\writtenline{ }
-\marksright{2}
-\totalmarks
-
-\newpage
-
-\question{A student investigates the resistance of a wire.}{10}
-\figplaceholder[fig:resistance-wire]{11}{4.2}
-
-\partquestion{a}{Complete the table headings for the measurements needed in this experiment.}
-
-\begin{center}
-\renewcommand{\arraystretch}{1.8}
-\begin{tabular}{|p{38mm}|p{38mm}|p{38mm}|}
-\hline
-\textbf{Length of wire / cm} & & \\ \hline
-20 & & \\ \hline
-40 & & \\ \hline
-60 & & \\ \hline
-80 & & \\ \hline
-\end{tabular}
-\end{center}
-\marksright{2}
-
-\partquestion{b}{Describe how the student can use the measurements to determine the resistance of the wire.}
-\answerbox[34mm]
-\marksright{4}
-
-\partquestion{c}{State two precautions that improve the reliability of the results.}
-\twowrittenlines
-\marksright{2}
-
-\partquestion{d}{On the grid, sketch the expected shape of a graph of resistance against length for a uniform wire.}
-\begin{center}
-\begin{tikzpicture}[x=0.5cm,y=0.5cm]
-  \draw[step=0.5cm,gray!55,very thin] (0,0) grid (18,10);
-  \draw[thick,->] (0,0) -- (18.5,0) node[right] {length};
-  \draw[thick,->] (0,0) -- (0,10.5) node[above] {resistance};
-\end{tikzpicture}
-\end{center}
-\marksright{2}
-\totalmarks
-
-\blankpage
-
-\question{This page shows the structure for adding another long question. Replace this text with your own question stem.}{6}
-\partquestion{a}{Write the first part of the question here.}
-\working[18mm]
-\answer{answer}{unit}{2}
-\partquestion{b}{Write the second part of the question here.}
-\answerbox[30mm]
+\partquestion{b}{A vase is placed on a table. Forces X and Y act on the vase, as shown in Fig. 1.1.}
+\vasefigure
+\parttext{The mass of the vase is 0.25 kg. The vase is not moving.}
+\parttext{Calculate the value of force X and the value of force Y.}
+\working[31mm]
+\noindent\hspace*{\dimexpr\qnumberwidth+\partlabelwidth\relax}X \answerline[55mm]\par
+\vspace{5mm}
+\noindent\hspace*{\dimexpr\qnumberwidth+\partlabelwidth\relax}Y \answerline[55mm]\par
 \marksright{4}
 \totalmarks
 

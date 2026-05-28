@@ -28,13 +28,15 @@ On macOS, install MacTeX or BasicTeX, then make sure `pdflatex` is available in 
 pdflatex --version
 ```
 
-If VS Code cannot find `pdflatex` on Mac, open VS Code from a terminal with `code .`, or add the TeX binary directory to your shell `PATH`. For a standard MacTeX install, that is usually:
+For this Mac workspace, `.vscode/settings.json` is pinned to the standard MacTeX executable:
 
 ```bash
 /Library/TeX/texbin
 ```
 
-The `.vscode/settings.json` file uses the generic command name `pdflatex`, so the same project settings should work on both Windows and Mac as long as `pdflatex` is on `PATH`.
+If you move the project back to Windows, change the VS Code tool command from `/Library/TeX/texbin/pdflatex` to `pdflatex`, or to the full Windows path for your TeX installation.
+
+The build uses `-synctex=1`, so source/PDF syncing works after a successful build.
 
 ## Paper Metadata
 
@@ -52,6 +54,18 @@ Edit these commands near the top of the `.tex` file:
 ```
 
 Do not edit the cover-page layout helpers unless changing the visual design of the front page.
+
+## Layout Notes
+
+The template uses `11pt` text, matching the real Cambridge papers we checked. Do not reduce the class size to make text fit; if a line wraps too early, check the question layout widths first.
+
+Question text widths are calculated from `\textwidth`, not `\linewidth`, so part labels and question stems can use the full available line. This matters for long starts such as:
+
+```latex
+\questionpart{a}{Fig. \figref{fig:river-canoe} shows water in a river moving parallel to the river bank at 4.0m/s and a canoe travelling in the river.}{8}
+```
+
+Question and part labels use fixed 8 mm label columns. This keeps the spacing close to the Cambridge layout while allowing references and question text to update automatically when questions are reordered.
 
 ## Cover Page Helpers
 
@@ -81,6 +95,14 @@ The second argument is the total mark for that question. End the question with:
 \totalmarks
 ```
 
+If the question starts immediately with a part label, such as `3 (a) Fig. 3.1 shows...`, use:
+
+```latex
+\questionpart{a}{Fig. \figref{fig:river-canoe} shows water in a river.}{8}
+```
+
+Then use `\parttext{...}` for continuation text under the same part before starting `(b)`.
+
 Example:
 
 ```latex
@@ -99,13 +121,13 @@ Example:
 Use `\qtext{...}` for normal text under the main question, especially after a figure:
 
 ```latex
-\question{Fig. 1.1 shows an electric bicycle.}{8}
-\figplaceholder{10}{4.5}{1.1}
+\question{Fig. \figref{fig:electric-bicycle} shows an electric bicycle.}{8}
+\figplaceholder[fig:electric-bicycle]{10}{4.5}
 
 \qtext{When fully charged, the battery can deliver a power of 600 W for 60 min.}
 ```
 
-This keeps the text aligned with the main question text column.
+This keeps the text aligned with the main question text column. Figure numbers are generated from the current question number, so this example becomes `Fig. 1.1` if it is in question 1 and `Fig. 3.1` if the question is moved to question 3.
 
 ## Parts: `(a)`, `(b)`, `(c)`
 
@@ -265,16 +287,43 @@ The optional argument controls the box height.
 Use the placeholder command while drafting:
 
 ```latex
-\figplaceholder{10}{4.5}{1.1}
+\figplaceholder[fig:setup]{10}{4.5}
 ```
 
 Arguments:
 
-1. Width in cm
-2. Height in cm
-3. Figure number
+1. Optional label for cross-references
+2. Width in cm
+3. Height in cm
 
-Replace the placeholder with a real `tikzpicture` or `\includegraphics` later if needed.
+Refer to the figure with:
+
+```latex
+Fig. \figref{fig:setup}
+```
+
+Figure numbers reset inside each main question. The first figure in question 2 is numbered `Fig. 2.1`, the second is `Fig. 2.2`, and so on. If questions are reordered, the figure references update after rebuilding twice.
+
+Replace the placeholder with a real `tikzpicture` or `\includegraphics` later if needed:
+
+```latex
+\examfigure{fig:vase}{
+  \includegraphics[width=75mm]{assets/diagrams/vase.png}
+}
+```
+
+For cropped diagrams from a PDF, use `\includegraphics` options:
+
+```latex
+\examfigure{fig:original-setup}{
+  \includegraphics[
+    page=3,
+    trim=40mm 80mm 60mm 120mm,
+    clip,
+    width=80mm
+  ]{0625_s22_qp_42.pdf}
+}
+```
 
 ## Tables And Graphs
 
