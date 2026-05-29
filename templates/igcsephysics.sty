@@ -1,5 +1,12 @@
 \RequirePackage[a4paper,left=18mm,right=18mm,top=17mm,bottom=17mm]{geometry}
-\RequirePackage{helvet}
+\RequirePackage{iftex}
+\ifPDFTeX
+  \RequirePackage{helvet}
+\else
+  \RequirePackage{fontspec}
+  \setmainfont{Arial}
+  \setsansfont{Arial}
+\fi
 \RequirePackage{array}
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
@@ -93,7 +100,6 @@
   \vspace{4mm}
   \hrule
   \vspace{2mm}
-  \small
   \begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}r@{}}
     {\bfseries \examtitle} & {\bfseries \examcode}\\[2mm]
     \papername & {\bfseries \examseason}\\[2mm]
