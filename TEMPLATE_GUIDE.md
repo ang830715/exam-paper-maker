@@ -1,8 +1,46 @@
 # IGCSE Physics LaTeX Template Guide
 
-This guide explains how to use `igcse_physics_template.tex` to create Cambridge-style IGCSE Physics practice papers.
+This guide explains how to use this project to create Cambridge-style IGCSE Physics practice papers.
 
-The template is designed so most users only need to edit the metadata at the top and replace the sample questions in the document body.
+The reusable layout and commands live in `templates/igcsephysics.sty`. Start new papers from the blank files in `templates/`, and use the filled files in `examples/` as references.
+
+## Project Layout
+
+```text
+AGENTS.md                           short operating rules for Codex
+templates/igcsephysics.sty         reusable package: layout, cover page, helpers
+templates/paper2_mcq_template.tex  blank Paper 2 starter
+templates/paper4_theory_template.tex blank Paper 4 starter
+examples/paper2_mcq_sample.tex     filled Paper 2 example
+examples/paper2_mcq_sample_body.tex shared Paper 2 example body
+examples/paper4_theory_sample.tex  filled Paper 4 example
+papers/                            suggested folder for real generated papers
+assets/mcq/                        cropped MCQ diagrams
+```
+
+## Template Workflow
+
+For a new paper, copy one of the files in `templates/` and edit that copy. Keep shared layout changes in `templates/igcsephysics.sty`; keep paper-specific metadata and questions in the paper `.tex` file.
+
+Template files in `templates/` load the shared style with:
+
+```latex
+\usepackage{igcsephysics}
+```
+
+Example files in `examples/` load the same style by relative path:
+
+```latex
+\usepackage{../templates/igcsephysics}
+```
+
+When compiling a paper from `templates/` or `examples/`, keep:
+
+```latex
+\renewcommand{\assetpath}{../assets}
+```
+
+This makes image paths such as `\assetpath/mcq/q03_velocity_time_graph.png` work from the subfolder.
 
 ## Build Setup
 
@@ -40,20 +78,20 @@ The build uses `-synctex=1`, so source/PDF syncing works after a successful buil
 
 ## Paper Metadata
 
-Edit these commands near the top of the `.tex` file:
+Edit these commands near the top of the paper `.tex` file:
 
 ```latex
-\newcommand{\examtitle}{PHYSICS}
-\newcommand{\examcode}{0625/42}
-\newcommand{\papername}{Paper 4 Theory (Extended)}
-\newcommand{\examseason}{Practice Paper}
-\newcommand{\examtime}{1 hour 15 minutes}
-\newcommand{\exammarks}{80}
-\newcommand{\examyear}{2026}
-\newcommand{\examfooter}{0625/42/PRACTICE}
+\renewcommand{\examtitle}{PHYSICS}
+\renewcommand{\examcode}{0625/42}
+\renewcommand{\papername}{Paper 4 Theory (Extended)}
+\renewcommand{\examseason}{Practice Paper}
+\renewcommand{\examtime}{1 hour 15 minutes}
+\renewcommand{\exammarks}{80}
+\renewcommand{\examyear}{2026}
+\renewcommand{\examfooter}{0625/42/PRACTICE}
 ```
 
-Do not edit the cover-page layout helpers unless changing the visual design of the front page.
+Do not edit `templates/igcsephysics.sty` unless changing the shared visual design or helper commands.
 
 ## Layout Notes
 
@@ -402,19 +440,15 @@ Diagram choices:
 
 This is preferred for past-paper-based examples because it uses the original figure block.
 
-### Current Template Body
+### Paper 2 Example Body
 
-The current `igcse_physics_template.tex` body shows the Paper 2 MCQ examples first. The Paper 4 structured-question examples are still kept in the same file, but they are temporarily disabled while the MCQ workflow is being refined:
+The Paper 2 sample keeps its question body in a separate file:
 
 ```latex
-% Structured question examples are kept below, but temporarily disabled while
-% the Paper 2 multiple-choice workflow is being refined.
-\iffalse
-...
-\fi
+\input{paper2_mcq_sample_body.tex}
 ```
 
-To show the structured examples again, remove or comment out the `\iffalse` and matching `\fi`.
+This keeps the wrapper metadata small while making the MCQ examples easier to reuse or compare.
 
 ## Parts: `(a)`, `(b)`, `(c)`
 

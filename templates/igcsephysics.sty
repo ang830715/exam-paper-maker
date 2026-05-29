@@ -1,13 +1,16 @@
-\documentclass[12pt,a4paper]{article}
-
-\usepackage[a4paper,left=18mm,right=18mm,top=17mm,bottom=17mm]{geometry}
-\usepackage[scaled=0.95]{helvet}
-\usepackage{array}
-\usepackage{enumitem}
-\usepackage{fancyhdr}
-\usepackage{lastpage}
-\usepackage{tikz}
-\usepackage{xcolor}
+\RequirePackage[a4paper,left=18mm,right=18mm,top=17mm,bottom=17mm]{geometry}
+\RequirePackage{helvet}
+\RequirePackage{array}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{enumitem}
+\RequirePackage{etoolbox}
+\RequirePackage{fancyhdr}
+\RequirePackage{graphicx}
+\RequirePackage{ifthen}
+\RequirePackage{lastpage}
+\RequirePackage{tikz}
+\RequirePackage{xcolor}
 
 \renewcommand{\familydefault}{\sfdefault}
 \setlength{\parindent}{0pt}
@@ -23,15 +26,16 @@
 \newcommand{\papername}{Paper 4 Theory (Extended)}
 \newcommand{\examseason}{Practice Paper}
 \newcommand{\examtime}{1 hour 15 minutes}
-\newcommand{\exammarks}{10}
+\newcommand{\exammarks}{80}
 \newcommand{\examyear}{2026}
 \newcommand{\examfooter}{0625/42/PRACTICE}
 \newcommand{\copyrightline}{\copyright\ Practice paper}
+\newcommand{\assetpath}{assets}
 
-\fancyhead[C]{\ifnum\value{page}>1\textbf{\thepage}\fi}
-\fancyfoot[L]{\ifnum\value{page}>1{\small \copyright\ Practice paper}\fi}
-\fancyfoot[C]{\ifnum\value{page}>1{\small \examfooter}\fi}
-\fancyfoot[R]{\ifnum\value{page}>1\ifodd\value{page}{\small [Turn over}\fi\fi}
+\fancyhead[C]{\ifthenelse{\value{page}>1}{\textbf{\thepage}}{}}
+\fancyfoot[L]{\ifthenelse{\value{page}>1}{{\small \copyright\ Practice paper}}{}}
+\fancyfoot[C]{\ifthenelse{\value{page}>1}{{\small \examfooter}}{}}
+\fancyfoot[R]{\ifthenelse{\value{page}>1 \AND \isodd{\value{page}}}{{\small [Turn over}}{}}
 
 \newcommand{\candidateboxes}[1]{%
   \begin{tikzpicture}[baseline=(boxbase.base),x=1mm,y=1mm]
@@ -68,14 +72,14 @@
         \draw[line width=0.25mm] (6,9) -- (6,1);
       \end{tikzpicture} &
       \begin{tabular}{@{}l@{}}
-        {\Large\bfseries Cambridge Assessment}\\[-1mm]
-        {\Large International Education}
+        {\huge\bfseries Cambridge Assessment}\\[-1mm]
+        {\huge International Education}
       \end{tabular}
     \end{tabular}
   \end{flushright}
 
   \vspace{7mm}
-  {\LARGE\bfseries Cambridge IGCSE\textsuperscript{TM}}\par
+  {\Huge\bfseries Cambridge IGCSE\textsuperscript{TM}}\par
 
   \vspace{7mm}
   \nameentry
@@ -140,6 +144,8 @@
 }
 
 \newcounter{question}
+\newcounter{figureinquestion}[question]
+\renewcommand{\thefigureinquestion}{\thequestion.\arabic{figureinquestion}}
 \newlength{\qnumberwidth}
 \newlength{\partlabelwidth}
 \newlength{\subpartlabelwidth}
@@ -148,9 +154,9 @@
 \setlength{\qnumberwidth}{8mm}
 \setlength{\partlabelwidth}{8mm}
 \setlength{\subpartlabelwidth}{8mm}
-\setlength{\questiontextwidth}{\dimexpr\linewidth-\qnumberwidth\relax}
-\setlength{\parttextwidth}{\dimexpr\linewidth-\qnumberwidth-\partlabelwidth\relax}
-\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\setlength{\questiontextwidth}{\dimexpr\textwidth-\qnumberwidth\relax}
+\setlength{\parttextwidth}{\dimexpr\textwidth-\qnumberwidth-\partlabelwidth\relax}
+\newcolumntype{L}[1]{>{\arraybackslash}p{#1}}
 \newcolumntype{P}[1]{>{\arraybackslash}p{#1}}
 
 \newcommand{\question}[2]{%
@@ -161,6 +167,16 @@
   \end{tabular}
   \par\vspace{2mm}
   \def\questiontotal{#2}
+}
+
+\newcommand{\questionpart}[3]{%
+  \refstepcounter{question}
+  \vspace{2mm}
+  \begin{tabular}{@{}L{\qnumberwidth}@{}L{\partlabelwidth}@{}L{\parttextwidth}@{}}
+    \textbf{\thequestion} & \partlabel{#1} & #2
+  \end{tabular}
+  \par\vspace{2mm}
+  \def\questiontotal{#3}
 }
 
 \newcommand{\qtext}[1]{%
@@ -228,6 +244,21 @@
   \par\hfill #2 = \answerline[#1]\ #3\ [#4]\par
 }
 
+\newcommand{\rightanswerline}[2][70mm]{%
+  \par\vspace{2mm}
+  \hfill #2\ \answerline[#1]\par
+}
+
+\newcommand{\rightanswermark}[1]{%
+  \par\vspace{-1mm}\hfill [#1]\par
+}
+
+\newcommand{\rightanswer}[3][70mm]{%
+  \rightanswerline[#1]{#2}%
+  \rightanswermark{#3}%
+  \par
+}
+
 \newcommand{\marksright}[1]{\hfill [#1]\par}
 
 \newcommand{\markinline}[1]{\hfill [#1]}
@@ -283,22 +314,107 @@
   \par
 }
 
+\newcommand{\mcquestion}[1]{%
+  \refstepcounter{question}
+  \par\vspace{8mm}
+  \begin{tabular}{@{}L{\qnumberwidth}@{}L{\questiontextwidth}@{}}
+    \textbf{\thequestion} & #1
+  \end{tabular}
+  \par
+}
+
+\newcommand{\mcqtext}[1]{%
+  \par\vspace{4.5mm}
+  \begin{tabular}{@{}L{\qnumberwidth}@{}L{\questiontextwidth}@{}}
+    & #1
+  \end{tabular}
+  \par
+}
+
+\newcommand{\mcqcenter}[1]{%
+  \par\vspace{4.5mm}
+  \noindent\hspace*{\qnumberwidth}%
+  \begin{minipage}{\questiontextwidth}
+    \centering #1
+  \end{minipage}
+  \par
+}
+
+\newcommand{\mcqimage}[2][\questiontextwidth]{%
+  \mcqcenter{\includegraphics[width=#1]{#2}}%
+}
+
+\newcommand{\mcqchoices}[4]{%
+  \par\vspace{4mm}
+  \noindent\hspace*{\qnumberwidth}%
+  \begin{tabular}{@{}P{8mm}@{}P{\dimexpr\questiontextwidth-8mm\relax}@{}}
+    \textbf{A} & #1\\[3.5mm]
+    \textbf{B} & #2\\[3.5mm]
+    \textbf{C} & #3\\[3.5mm]
+    \textbf{D} & #4
+  \end{tabular}
+  \par
+}
+
+\newcommand{\mcqchoiceswide}[4]{%
+  \par\vspace{4mm}
+  \noindent\hspace*{\qnumberwidth}%
+  \begin{tabular*}{\questiontextwidth}{@{}l@{\extracolsep{\fill}}l@{\extracolsep{\fill}}l@{\extracolsep{\fill}}l@{}}
+    \textbf{A}\quad #1 & \textbf{B}\quad #2 & \textbf{C}\quad #3 & \textbf{D}\quad #4
+  \end{tabular*}
+  \par
+}
+
+\newcommand{\mcqchoicegrid}[4]{%
+  \par\vspace{4mm}
+  \noindent\hspace*{\qnumberwidth}%
+  \begin{tabular*}{\questiontextwidth}{@{}c@{\extracolsep{\fill}}c@{}}
+    \textbf{A}\\[1mm]#1 & \textbf{B}\\[1mm]#2\\[5mm]
+    \textbf{C}\\[1mm]#3 & \textbf{D}\\[1mm]#4
+  \end{tabular*}
+  \par
+}
+
+\newenvironment{mcqtable}[1]{%
+  \par\vspace{4mm}
+  \noindent\hspace*{\qnumberwidth}%
+  \renewcommand{\arraystretch}{1.35}%
+  \begin{tabular}{#1}
+}{%
+  \end{tabular}
+  \par
+}
+
 \newcommand{\answerbox}[1][28mm]{%
   \begin{center}
     \fbox{\begin{minipage}{\parttextwidth}\vspace{#1}\end{minipage}}
   \end{center}
 }
 
-\newcommand{\figplaceholder}[3]{%
+\newcommand{\figref}[1]{\ref{#1}}
+
+\newcommand{\maybefiglabel}[1]{%
+  \ifblank{#1}{}{\label{#1}}%
+}
+
+\newcommand{\examfigure}[2]{%
+  \refstepcounter{figureinquestion}%
   \begin{center}
-    \begin{tikzpicture}
-      \draw[gray!70] (0,0) rectangle (#1,#2);
-      \draw[gray!70] (0,0) -- (#1,#2);
-      \draw[gray!70] (0,#2) -- (#1,0);
-      \node[gray!70] at (#1/2,#2/2) {diagram area};
-    \end{tikzpicture}\\[1mm]
-    {\bfseries Fig. #3}
+    #2\\[1mm]
+    {\bfseries Fig. \thefigureinquestion}%
+    \maybefiglabel{#1}%
   \end{center}
+}
+
+\newcommand{\figplaceholder}[3][]{%
+  \examfigure{#1}{%
+    \begin{tikzpicture}
+      \draw[gray!70] (0,0) rectangle (#2,#3);
+      \draw[gray!70] (0,0) -- (#2,#3);
+      \draw[gray!70] (0,#3) -- (#2,0);
+      \node[gray!70] at (#2/2,#3/2) {diagram area};
+    \end{tikzpicture}%
+  }%
 }
 
 \newcommand{\blankpage}{%
@@ -311,69 +427,3 @@
   \vspace*{\fill}
   \newpage
 }
-
-\newcommand{\vasefigure}{%
-  \begin{center}
-    \begin{tikzpicture}[x=1cm,y=1cm,line cap=butt,line join=round]
-      \draw[line width=0.55pt] (-2.9,0) -- (2.9,0);
-
-      \draw[line width=0.55pt] (-2.75,2.87) rectangle (2.75,3.00);
-      \draw[line width=0.55pt] (-2.10,2.63) -- (2.10,2.63) -- (2.10,2.87) -- (-2.10,2.87) -- cycle;
-      \draw[line width=0.55pt] (-1.95,2.63) -- (-2.35,0);
-      \draw[line width=0.55pt] (-1.45,2.63) -- (-2.22,0);
-      \draw[line width=0.55pt] (1.95,2.63) -- (2.35,0);
-      \draw[line width=0.55pt] (1.45,2.63) -- (2.22,0);
-
-      \draw[line width=0.62pt]
-        (-0.20,3.02)
-        .. controls (-0.44,3.18) and (-0.48,3.50) .. (-0.28,3.76)
-        .. controls (-0.14,3.93) and (-0.38,4.12) .. (-0.18,4.28)
-        -- (0.32,4.28)
-        .. controls (0.12,4.11) and (0.36,3.93) .. (0.50,3.76)
-        .. controls (0.72,3.49) and (0.61,3.14) .. (0.25,3.02)
-        .. controls (0.13,2.95) and (-0.08,2.95) .. (-0.20,3.02);
-
-      \draw[line width=0.62pt] (0,3.00) -- (0,4.68);
-      \draw[->,line width=0.62pt] (0,4.20) -- (0,4.95);
-      \draw[->,line width=0.62pt] (0,3.00) -- (0,1.02);
-      \node[left] at (-0.03,4.82) {X};
-      \node[left] at (-0.03,1.10) {Y};
-
-      \node[left] at (-1.45,3.72) {vase};
-      \draw[line width=0.45pt] (-1.36,3.62) -- (-0.38,3.35);
-    \end{tikzpicture}\\[1mm]
-    {\bfseries Fig. 1.1}
-  \end{center}
-}
-
-\begin{document}
-
-\frontpage
-
-\question{A student has a metal object.}{10}
-
-\partsubquestion{a}{i}{The student measures the mass of the object.}
-\subparttext{State the name of the equipment used to measure the mass.}
-\subpartwrittenanswer{ }{1}
-
-\subpartquestion{ii}{The mass of the metal object is 1260 g. The volume of the metal is 150 cm\textsuperscript{3}.}
-\subparttext{Calculate the density of the metal. Include the unit.}
-\working[34mm]
-\par\hfill density = \answerline[58mm]\ [4]\par
-
-\subpartquestion{iii}{The mass of the metal object is given in grams. State the mass in kg.}
-\working[19mm]
-\par\hfill mass = \answerline[55mm]\ kg\ [1]\par
-
-\partquestion{b}{A vase is placed on a table. Forces X and Y act on the vase, as shown in Fig. 1.1.}
-\vasefigure
-\parttext{The mass of the vase is 0.25 kg. The vase is not moving.}
-\parttext{Calculate the value of force X and the value of force Y.}
-\working[31mm]
-\noindent\hspace*{\dimexpr\qnumberwidth+\partlabelwidth\relax}X \answerline[55mm]\par
-\vspace{5mm}
-\noindent\hspace*{\dimexpr\qnumberwidth+\partlabelwidth\relax}Y \answerline[55mm]\par
-\marksright{4}
-\totalmarks
-
-\end{document}

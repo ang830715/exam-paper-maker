@@ -7,7 +7,9 @@
 *.fls
 *.log
 *.out
-# *.pdf
+# Keep root/reference PDFs trackable, but ignore PDFs generated from examples/templates.
+examples/*.pdf
+templates/*.pdf
 *.run.xml
 *.synctex.gz
 *.toc
