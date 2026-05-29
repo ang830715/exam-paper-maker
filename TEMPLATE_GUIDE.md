@@ -366,6 +366,21 @@ When the four options are diagrams from a past paper, crop the whole answer-choi
 
 Use `\mcqchoicegrid` only when you are creating original diagram choices yourself.
 
+### MCQ Page Breaks
+
+Do not split one multiple-choice question across two pages. Wrap each full MCQ in `mcqblock` so LaTeX can break pages between questions but not inside one question:
+
+```latex
+\begin{mcqblock}
+\mcquestion{A spring is suspended from a stand. Loads are added and the extensions are measured.}
+\mcqimage[90mm]{assets/mcq/spring.png}
+\mcqtext{Which graph shows the result of plotting extension against load?}
+\mcqimage[120mm]{assets/mcq/spring_graph_choices.png}
+\end{mcqblock}
+```
+
+Use manual `\newpage` only when the source paper intentionally starts a new section or when the automatic block flow still produces a poor layout.
+
 ### Examples Based On 0625_s25_qp_22
 
 These examples show how to express common Paper 2 layouts using the template helpers. They are based on the real May/June 2025 Paper 2 layouts, but are kept as short formatting examples.
@@ -499,6 +514,17 @@ Example:
 
 ## Answer Lines
 
+### Physics Symbols In Text
+
+Pay close attention to italic symbols in source questions. For single-letter physical quantities embedded in prose, match the source style:
+
+```latex
+force \textit{F}
+weight \textit{W}
+```
+
+Use `\textit{...}` when the source uses the document's sans-serif italic text, such as Arial Italic in Word screenshots. Do not automatically use math mode (`$F$`) unless the source is genuinely mathematical notation, because math italic uses a different font and can visibly mismatch the paper.
+
 ### Full Written Answer Lines
 
 For normal full-width dotted answer lines, use:
@@ -546,6 +572,14 @@ For "State two..." style answers:
 
 ```latex
 \twowrittenlines
+\marksright{2}
+```
+
+For labelled written lines, where the prompt labels should align on the left and the dotted lines should extend to the right:
+
+```latex
+\labelledwrittenline{condition 1}
+\labelledwrittenline{condition 2}
 \marksright{2}
 ```
 

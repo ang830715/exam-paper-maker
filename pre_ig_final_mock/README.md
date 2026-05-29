@@ -13,48 +13,36 @@ xelatex -synctex=1 -interaction=nonstopmode -file-line-error pre_ig_final_mock.t
 xelatex -synctex=1 -interaction=nonstopmode -file-line-error pre_ig_final_mock.tex
 ```
 
-## Manual Diagram Crop Workflow
+## Manual Diagram Crops
 
-The source `.docx` stores questions as screenshots. The text is transcribed into LaTeX, but diagrams should be cropped as separate images.
-
-To avoid tedious file naming, manually crop diagrams into:
+The source `.docx` stores questions as screenshots. The text is transcribed into LaTeX, and clean diagram crops live in:
 
 ```text
 assets/manual_crops/
 ```
 
-Use simple numbered names:
-
-```text
-01.png
-02.png
-03.png
-...
-```
-
 Crop only the diagram content. Do not include source question text, source `Fig. x.x` captions, answer lines, or surrounding whitespace. For MCQ diagram choices, include the A/B/C/D labels if they are part of the answer-choice diagram block.
 
-Expected crop order:
+The current manual crops are named by question and content:
 
 ```text
-01 arrow direction diagram
-02 solid blocks density diagram
-03 wooden bar turning-effect choices
-04 spring-and-loads apparatus
-05 extension-against-load graph choices
-06 stone in liquid diagram
-07 voltmeter/ammeter circuit choices
-08 equilibrium force choices
-09 prism dispersion choices
-10 mirror reflection choices
-11 changes of state diagram
-12 dolls' house lighting circuits
-13 changes of state structured figure
-14 vase forces figure
-15 plastic rod and dry cloth figure
-16 mirror reflection figure
-17 converging lens figure
-18 metre rule equilibrium figure
+q04_density_blocks.png
+q05_turning_effect_choices.png
+q06_spring_apparatus.png
+q06_extension_graph_choices.png
+q07_stone_liquid.png
+q08_meter_circuit_choices.png
+q09_equilibrium_choices.png
+q10_prism_dispersion_choices.png
+q11_mirror_reflection_choices.png
+q12_changes_state_mcq.png
+q13_dolls_house_circuits.png
+q14_changes_state_structured.png
+q15_vase_forces.png
+q16_plastic_rod_cloth.png
+q18_mirror_reflection.png
+q18_lens_image.png
+q19_metre_rule.png
 ```
 
-After the crops are saved, replace the current `source_questions/...` cropped includes in `pre_ig_final_mock.tex` with direct references to `assets/manual_crops/NN.png`.
+Question 3 still uses a cropped source-question screenshot because no separate manual crop for the arrow direction diagram is currently present.

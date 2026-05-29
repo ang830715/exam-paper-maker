@@ -42,7 +42,7 @@
 \fancyhead[C]{\ifthenelse{\value{page}>1}{\textbf{\thepage}}{}}
 \fancyfoot[L]{\ifthenelse{\value{page}>1}{{\small \copyright\ Practice paper}}{}}
 \fancyfoot[C]{\ifthenelse{\value{page}>1}{{\small \examfooter}}{}}
-\fancyfoot[R]{\ifthenelse{\value{page}>1 \AND \isodd{\value{page}}}{{\small [Turn over}}{}}
+\fancyfoot[R]{\ifthenelse{\value{page}>1 \AND \isodd{\value{page}}}{{\small\bfseries [Turn over}}{}}
 
 \newcommand{\candidateboxes}[1]{%
   \begin{tikzpicture}[baseline=(boxbase.base),x=1mm,y=1mm]
@@ -320,6 +320,20 @@
   \par
 }
 
+\newlength{\labelledwrittenlabelwidth}
+\newcommand{\labelledwrittenline}[2][]{%
+  \par\vspace{1mm}
+  \ifblank{#1}{%
+    \settowidth{\labelledwrittenlabelwidth}{#2\hspace{2mm}}%
+  }{%
+    \setlength{\labelledwrittenlabelwidth}{#1}%
+  }%
+  \noindent\hspace*{\dimexpr\qnumberwidth+\partlabelwidth\relax}%
+  \makebox[\labelledwrittenlabelwidth][l]{#2\hspace{2mm}}%
+  \answerline[\dimexpr\linewidth-\qnumberwidth-\partlabelwidth-\labelledwrittenlabelwidth-2mm\relax]%
+  \par
+}
+
 \newcommand{\mcquestion}[1]{%
   \refstepcounter{question}
   \par\vspace{8mm}
@@ -344,6 +358,12 @@
     \centering #1
   \end{minipage}
   \par
+}
+
+\newenvironment{mcqblock}{%
+  \par\noindent\begin{minipage}{\textwidth}%
+}{%
+  \end{minipage}\par
 }
 
 \newcommand{\mcqimage}[2][\questiontextwidth]{%

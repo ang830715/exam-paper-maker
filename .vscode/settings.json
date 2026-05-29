@@ -1,6 +1,17 @@
 {
   "latex-workshop.latex.tools": [
     {
+      "name": "xelatex-from-dir",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "Set-Location -LiteralPath '%DIR%'; xelatex -synctex=1 -interaction=nonstopmode -file-line-error '%DOCFILE%'"
+      ]
+    },
+    {
       "name": "pdflatex",
       "command": "pdflatex",
       "args": [
@@ -13,6 +24,13 @@
   ],
   "latex-workshop.latex.recipes": [
     {
+      "name": "xelatex from file folder",
+      "tools": [
+        "xelatex-from-dir",
+        "xelatex-from-dir"
+      ]
+    },
+    {
       "name": "pdflatex",
       "tools": [
         "pdflatex",
@@ -20,7 +38,7 @@
       ]
     }
   ],
-  "latex-workshop.latex.recipe.default": "pdflatex",
+  "latex-workshop.latex.recipe.default": "xelatex from file folder",
   "latex-workshop.latex.synctex.afterBuild.enabled": true,
   "latex-workshop.view.pdf.viewer": "tab",
   "latex-workshop.latex.outDir": "%DIR%",
