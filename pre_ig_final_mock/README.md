@@ -6,6 +6,8 @@ The source questions in the Word document are embedded as pictures. The LaTeX pa
 
 The Word cover metadata states `Pre-IG Theory`, `June 2026`, and `40` marks. The embedded source image sequence contains 13 multiple-choice question blocks followed by 5 structured question blocks; all visible source question blocks are included in document order.
 
+This mock uses the default school practice front page, so it does not show the `For Examiner's Use` marking table. Use `\schoolexamfrontpage` only for school exam papers that need that table.
+
 Build from this folder with XeLaTeX so the PDF embeds Arial:
 
 ```bash

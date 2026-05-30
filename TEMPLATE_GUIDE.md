@@ -2,7 +2,7 @@
 
 This guide explains how to use this project to create Cambridge-style IGCSE Physics practice papers.
 
-The reusable layout and commands live in `templates/igcsephysics.sty`. Start new papers from the blank files in `templates/`, and use the filled files in `examples/` as references.
+The reusable layout and commands live in `templates/igcsephysics.sty`. Start each new paper in its own folder from the blank files in `templates/`, and use the filled files in `examples/` as references.
 
 ## Project Layout
 
@@ -14,13 +14,13 @@ templates/paper4_theory_template.tex blank Paper 4 starter
 examples/paper2_mcq_sample.tex     filled Paper 2 example
 examples/paper2_mcq_sample_body.tex shared Paper 2 example body
 examples/paper4_theory_sample.tex  filled Paper 4 example
-papers/                            suggested folder for real generated papers
+pre_ig_final_mock/                 example of a real generated paper folder
 assets/mcq/                        cropped MCQ diagrams
 ```
 
 ## Template Workflow
 
-For a new paper, copy one of the files in `templates/` and edit that copy. Keep shared layout changes in `templates/igcsephysics.sty`; keep paper-specific metadata and questions in the paper `.tex` file.
+For a new paper, create a dedicated folder at the project root, copy one of the files in `templates/` into that folder, and edit the copy. Keep shared layout changes in `templates/igcsephysics.sty`; keep paper-specific metadata and questions in the paper `.tex` file.
 
 Template files in `templates/` load the shared style with:
 
@@ -34,13 +34,29 @@ Example files in `examples/` load the same style by relative path:
 \usepackage{../templates/igcsephysics}
 ```
 
-When compiling a paper from `templates/` or `examples/`, keep:
+Paper files in their own root-level folders, such as `pre_ig_final_mock/`, should also load the shared style by relative path:
+
+```latex
+\usepackage{../templates/igcsephysics}
+```
+
+For papers that use the shared project-level `assets/` folder, keep:
 
 ```latex
 \renewcommand{\assetpath}{../assets}
 ```
 
-This makes image paths such as `\assetpath/mcq/q03_velocity_time_graph.png` work from the subfolder.
+This makes image paths such as `\assetpath/mcq/q03_velocity_time_graph.png` work from the paper folder. If a paper has its own local asset folder, as `pre_ig_final_mock/` does, set `\assetpath` to that local folder instead.
+
+Example:
+
+```bash
+mkdir my_paper4
+cp templates/paper4_theory_template.tex my_paper4/my_paper4.tex
+cd my_paper4
+pdflatex -synctex=1 -interaction=nonstopmode -file-line-error my_paper4.tex
+pdflatex -synctex=1 -interaction=nonstopmode -file-line-error my_paper4.tex
+```
 
 ## Build Setup
 
@@ -89,9 +105,36 @@ Edit these commands near the top of the paper `.tex` file:
 \renewcommand{\exammarks}{80}
 \renewcommand{\examyear}{2026}
 \renewcommand{\examfooter}{0625/42/PRACTICE}
+\renewcommand{\copyrightline}{\copyright\ Practice paper}
 ```
 
 Do not edit `templates/igcsephysics.sty` unless changing the shared visual design or helper commands.
+
+## Front Page Choice
+
+The default `\frontpage` is the school practice front page. It uses the WHBC-style school header and full-width instructions, without a marking table.
+
+Available front-page macros:
+
+```latex
+\schoolpracticefrontpage  % default school front page, no examiner table
+\schoolexamfrontpage      % school front page with For Examiner's Use table
+\caieofficialfrontpage    % saved CAIE official-style front page
+```
+
+To use a different front page for one paper, add this near the metadata before `\begin{document}`:
+
+```latex
+\renewcommand{\frontpage}{\schoolexamfrontpage}
+```
+
+For a CAIE official-style front page, use:
+
+```latex
+\renewcommand{\frontpage}{\caieofficialfrontpage}
+```
+
+Keep the front-page design itself in `templates/igcsephysics.sty`. Keep paper-specific choices, such as using the exam front page instead of the practice front page, in the paper `.tex` file.
 
 ## Layout Notes
 
@@ -107,7 +150,7 @@ Question and part labels use fixed 8 mm label columns. This keeps the spacing cl
 
 ## Cover Page Helpers
 
-The cover page uses normal LaTeX layout, with small TikZ drawings only for the candidate-number boxes and logo approximation. This is more stable than drawing the whole first page as an overlay.
+The front pages use normal LaTeX layout, with TikZ only for fixed elements such as the school header, candidate boxes, and examiner-use table. This is more stable than drawing the whole first page as an overlay.
 
 Important helper commands:
 
@@ -115,9 +158,13 @@ Important helper commands:
 \nameentry
 \candidateentry{CENTRE}{\candidateboxes{5}}
 \candidateentry{CANDIDATE}{\candidateboxes{4}}
+\schoolfrontheader
+\examinerusetable
 ```
 
-The candidate-number boxes have a custom midpoint baseline so the labels are vertically centered against the boxes. If the front-page labels look misaligned after editing, check `\candidateboxes` before changing random vertical spaces.
+The CAIE official front page keeps the older centre/candidate-number helpers. The school front pages use the WHBC logo, school-name commands, candidate-name/class boxes, and optionally `\examinerusetable`.
+
+The candidate-number boxes have a custom midpoint baseline so the labels are vertically centered against the boxes. If CAIE official front-page labels look misaligned after editing, check `\candidateboxes` before changing random vertical spaces.
 
 ## Basic Question Structure
 

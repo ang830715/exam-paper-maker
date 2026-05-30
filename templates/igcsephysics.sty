@@ -1,4 +1,4 @@
-\RequirePackage[a4paper,left=18mm,right=18mm,top=17mm,bottom=17mm]{geometry}
+\RequirePackage[a4paper,left=18mm,right=18mm,top=17mm,bottom=25mm]{geometry}
 \RequirePackage{iftex}
 \ifPDFTeX
   \RequirePackage{helvet}
@@ -38,9 +38,12 @@
 \newcommand{\examfooter}{0625/42/PRACTICE}
 \newcommand{\copyrightline}{\copyright\ Practice paper}
 \newcommand{\assetpath}{assets}
+\newcommand{\schoollogo}{whbc logo.png}
+\newcommand{\schoolnamefirst}{Wuhan}
+\newcommand{\schoolnamesecond}{Britain-China School}
 
 \fancyhead[C]{\ifthenelse{\value{page}>1}{\textbf{\thepage}}{}}
-\fancyfoot[L]{\ifthenelse{\value{page}>1}{{\small \copyright\ Practice paper}}{}}
+\fancyfoot[L]{\ifthenelse{\value{page}>1}{{\small \copyrightline}}{}}
 \fancyfoot[C]{\ifthenelse{\value{page}>1}{{\small \examfooter}}{}}
 \fancyfoot[R]{\ifthenelse{\value{page}>1 \AND \isodd{\value{page}}}{{\small\bfseries [Turn over}}{}}
 
@@ -66,9 +69,7 @@
   \end{tabular}%
 }
 
-\newcommand{\frontpage}{%
-  \thispagestyle{empty}
-  \vspace*{-7mm}
+\newcommand{\caielogoblock}{%
   \begin{flushright}
     \begin{tabular}{@{}c@{\hspace{2mm}}l@{}}
       \begin{tikzpicture}[x=1mm,y=1mm,baseline=5mm]
@@ -83,7 +84,79 @@
         {\huge International Education}
       \end{tabular}
     \end{tabular}
-  \end{flushright}
+  \end{flushright}%
+}
+
+\newcommand{\schoollogoimage}{%
+  \IfFileExists{\schoollogo}{%
+    \includegraphics[width=18mm]{\schoollogo}%
+  }{%
+    \includegraphics[width=18mm]{../templates/\schoollogo}%
+  }%
+}
+
+\newcommand{\schoollogoimagewide}{%
+  \IfFileExists{\schoollogo}{%
+    \includegraphics[width=31mm]{\schoollogo}%
+  }{%
+    \includegraphics[width=31mm]{../templates/\schoollogo}%
+  }%
+}
+
+\newcommand{\schoollogoblock}{%
+  \begin{flushright}
+    \begin{tabular}{@{}c@{\hspace{3mm}}l@{}}
+      \schoollogoimage &
+      \begin{tabular}{@{}l@{}}
+        {\Large \schoolnamefirst}\\[-0.5mm]
+        {\Large \schoolnamesecond}
+      \end{tabular}
+    \end{tabular}
+  \end{flushright}%
+}
+
+\newcommand{\schoolfrontheader}{%
+  \noindent
+  \begin{tikzpicture}[x=1mm,y=1mm]
+    \node[anchor=west,inner sep=0pt] at (0,24) {\schoollogoimagewide};
+    \node[anchor=west,inner sep=0pt] at (36,28) {\fontsize{16}{20}\selectfont\bfseries \schoolnamefirst};
+    \node[anchor=west,inner sep=0pt] at (36,15) {\fontsize{16}{20}\selectfont\bfseries \schoolnamesecond};
+    \node[anchor=east,inner sep=0pt] at (120,34) {\fontsize{12}{15}\selectfont CANDIDATE};
+    \node[anchor=east,inner sep=0pt] at (120,28) {\fontsize{10}{13}\selectfont NAME};
+    \draw[line width=0.35pt] (122,25) rectangle (173,40);
+    \node[anchor=east,inner sep=0pt] at (120,12) {\fontsize{12}{15}\selectfont CANDIDATE};
+    \node[anchor=east,inner sep=0pt] at (120,6) {\fontsize{10}{13}\selectfont CLASS};
+    \draw[line width=0.35pt] (122,3) rectangle (173,18);
+    \draw[line width=0.35pt] (0,0) -- (173,0);
+  \end{tikzpicture}%
+}
+
+\newcommand{\examinerusetable}{%
+  \begingroup
+  \begin{tikzpicture}[x=1mm,y=1mm,baseline=(current bounding box.north)]
+    \def\tablew{45}
+    \def\leftw{15}
+    \def\headerh{12}
+    \def\rowh{12.5}
+    \def\tableh{124.5}
+    \draw[line width=0.5pt] (0,0) rectangle (\tablew,-\tableh);
+    \draw[line width=0.5pt] (0,-\headerh) -- (\tablew,-\headerh);
+    \draw[line width=0.5pt] (\leftw,-\headerh) -- (\leftw,-\tableh);
+    \foreach \i in {1,...,8} {
+      \draw[line width=0.5pt] (0,{-\headerh-\i*\rowh}) -- (\tablew,{-\headerh-\i*\rowh});
+    }
+    \node[anchor=center,inner sep=0pt] at (22.5,-6) {\bfseries\large For Examiner's Use};
+    \foreach \label [count=\i from 0] in {1,2,3,4,5,6,7,8,Total} {
+      \node[anchor=center,inner sep=0pt] at (7.5,{-\headerh-\i*\rowh-0.5*\rowh}) {\bfseries \label};
+    }
+  \end{tikzpicture}%
+  \endgroup
+}
+
+\newcommand{\caieofficialfrontpage}{%
+  \thispagestyle{empty}
+  \vspace*{-7mm}
+  \caielogoblock
 
   \vspace{7mm}
   {\Huge\bfseries Cambridge IGCSE\textsuperscript{TM}}\par
@@ -143,11 +216,111 @@
   \end{center}
   \vspace{5mm}
   \begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}r@{}}
-    DC (PRACTICE) 000000/1 & {\bfseries [Turn over}\\[4mm]
+    & {\bfseries [Turn over}\\[4mm]
     \copyrightline &
   \end{tabular*}
   \newpage
 }
+
+\newcommand{\schoolfrontpageintro}{%
+  \thispagestyle{empty}
+  \vspace*{-7mm}
+  \schoolfrontheader
+
+  \vspace{2mm}
+  \begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}r@{}}
+    {\bfseries \examtitle} & {\bfseries \examcode}\\[2mm]
+    \papername & {\bfseries \examseason}\\[2mm]
+    & {\bfseries \examtime}
+  \end{tabular*}
+
+  \vspace{5.5mm}
+  You must answer on the question paper.
+
+  \vspace{4mm}
+  No additional materials are needed.
+
+  \vspace{3.5mm}
+}
+
+\newcommand{\schoolfrontpagefooter}{%
+  \vfill
+  \hrule
+  \vspace{2mm}
+  \begin{center}
+    This document has \pageref{LastPage} pages. Any blank pages are indicated.
+  \end{center}
+  \vspace{5mm}
+  \begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}r@{}}
+    & {\bfseries [Turn over}\\[4mm]
+    \copyrightline &
+  \end{tabular*}
+  \newpage
+}
+
+\newcommand{\schoolexamfrontpage}{%
+  \schoolfrontpageintro
+  \begin{tabular}{@{}p{\dimexpr\linewidth-53mm\relax}@{\hspace{7mm}}p{46mm}@{}}
+    \begin{minipage}[t]{\linewidth}
+      \hrule
+      \vspace{2mm}
+      {\bfseries INSTRUCTIONS}
+      \begin{itemize}[leftmargin=5mm,itemsep=0mm,topsep=0.5mm,parsep=0mm,partopsep=0mm]
+        \item Answer \textbf{all} questions.
+        \item Use a black or dark blue pen. You may use an HB pencil for any diagrams or graphs.
+        \item Write your name, centre number and candidate number in the boxes at the top of the page.
+        \item Write your answer to each question in the space provided.
+        \item Do \textbf{not} use an erasable pen or correction fluid.
+        \item Do \textbf{not} write on any bar codes.
+        \item You may use a calculator.
+        \item You should show all your working and use appropriate units.
+        \item Take the weight of 1.0 kg to be 10 N (acceleration of free fall = 10 m/s\textsuperscript{2}).
+      \end{itemize}
+
+      \vspace{6mm}
+      {\bfseries INFORMATION}
+      \begin{itemize}[leftmargin=5mm,itemsep=0mm,topsep=0.5mm,parsep=0mm,partopsep=0mm]
+        \item The total mark for this paper is \exammarks.
+        \item The number of marks for each question or part question is shown in brackets [\hspace{2mm}].
+      \end{itemize}
+    \end{minipage}
+    &
+    \begin{minipage}[t]{\linewidth}
+      \vspace{0pt}
+      \examinerusetable
+    \end{minipage}
+  \end{tabular}
+  \schoolfrontpagefooter
+}
+
+\newcommand{\schoolpracticefrontpage}{%
+  \schoolfrontpageintro
+  \hrule
+  \vspace{2mm}
+  {\bfseries INSTRUCTIONS}
+  \begin{itemize}[leftmargin=5mm,itemsep=0mm,topsep=0.5mm,parsep=0mm,partopsep=0mm]
+    \item Answer \textbf{all} questions.
+    \item Use a black or dark blue pen. You may use an HB pencil for any diagrams or graphs.
+    \item Write your name, centre number and candidate number in the boxes at the top of the page.
+    \item Write your answer to each question in the space provided.
+    \item Do \textbf{not} use an erasable pen or correction fluid.
+    \item Do \textbf{not} write on any bar codes.
+    \item You may use a calculator.
+    \item You should show all your working and use appropriate units.
+    \item Take the weight of 1.0 kg to be 10 N (acceleration of free fall = 10 m/s\textsuperscript{2}).
+  \end{itemize}
+
+  \vspace{6mm}
+  {\bfseries INFORMATION}
+  \begin{itemize}[leftmargin=5mm,itemsep=0mm,topsep=0.5mm,parsep=0mm,partopsep=0mm]
+    \item The total mark for this paper is \exammarks.
+    \item The number of marks for each question or part question is shown in brackets [\hspace{2mm}].
+  \end{itemize}
+  \schoolfrontpagefooter
+}
+
+\newcommand{\schoolfrontpage}{\schoolpracticefrontpage}
+\newcommand{\frontpage}{\schoolfrontpage}
 
 \newcounter{question}
 \newcounter{figureinquestion}[question]
