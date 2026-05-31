@@ -42,6 +42,7 @@
   "latex-workshop.latex.synctex.afterBuild.enabled": true,
   "latex-workshop.view.pdf.viewer": "tab",
   "latex-workshop.latex.outDir": "%DIR%",
+  "latex-workshop.formatting.latex": "latexindent",
   "latex-workshop.latex.clean.method": "glob",
   "latex-workshop.latex.clean.fileTypes": [
     "*.aux",

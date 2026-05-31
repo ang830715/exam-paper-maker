@@ -42,7 +42,7 @@
 \newcommand{\schoolnamefirst}{Wuhan}
 \newcommand{\schoolnamesecond}{Britain-China School}
 
-\fancyhead[C]{\ifthenelse{\value{page}>1}{\textbf{\thepage}}{}}
+\fancyhead[C]{\ifthenelse{\value{page}>1}{\raisebox{-7mm}[0pt][0pt]{\textbf{\thepage}}}{}}
 \fancyfoot[L]{\ifthenelse{\value{page}>1}{{\small \copyrightline}}{}}
 \fancyfoot[C]{\ifthenelse{\value{page}>1}{{\small \examfooter}}{}}
 \fancyfoot[R]{\ifthenelse{\value{page}>1 \AND \isodd{\value{page}}}{{\small\bfseries [Turn over}}{}}
@@ -216,8 +216,7 @@
   \end{center}
   \vspace{5mm}
   \begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}r@{}}
-    & {\bfseries [Turn over}\\[4mm]
-    \copyrightline &
+    \copyrightline & {\bfseries [Turn over}
   \end{tabular*}
   \newpage
 }
@@ -252,8 +251,7 @@
   \end{center}
   \vspace{5mm}
   \begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}r@{}}
-    & {\bfseries [Turn over}\\[4mm]
-    \copyrightline &
+    \copyrightline & {\bfseries [Turn over}
   \end{tabular*}
   \newpage
 }
