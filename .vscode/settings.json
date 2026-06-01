@@ -1,44 +1,45 @@
 {
   "latex-workshop.latex.tools": [
     {
-      "name": "xelatex-from-dir",
-      "command": "powershell",
+      "name": "latexmk-xelatex",
+      "command": "latexmk",
       "args": [
-        "-NoProfile",
-        "-ExecutionPolicy",
-        "Bypass",
-        "-Command",
-        "Set-Location -LiteralPath '%DIR%'; xelatex -synctex=1 -interaction=nonstopmode -file-line-error '%DOCFILE%'"
-      ]
-    },
-    {
-      "name": "pdflatex",
-      "command": "pdflatex",
-      "args": [
+        "-xelatex",
         "-synctex=1",
         "-interaction=nonstopmode",
         "-file-line-error",
+        "-cd",
+        "%DOC%"
+      ]
+    },
+    {
+      "name": "latexmk-pdflatex",
+      "command": "latexmk",
+      "args": [
+        "-pdf",
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-cd",
         "%DOC%"
       ]
     }
   ],
   "latex-workshop.latex.recipes": [
     {
-      "name": "xelatex from file folder",
+      "name": "latexmk (xelatex, from file folder)",
       "tools": [
-        "xelatex-from-dir",
-        "xelatex-from-dir"
+        "latexmk-xelatex"
       ]
     },
     {
-      "name": "pdflatex",
+      "name": "latexmk (pdflatex, from file folder)",
       "tools": [
-        "pdflatex",
-        "pdflatex"
+        "latexmk-pdflatex"
       ]
     }
   ],
-  "latex-workshop.latex.recipe.default": "xelatex from file folder",
+  "latex-workshop.latex.recipe.default": "latexmk (xelatex, from file folder)",
   "latex-workshop.latex.synctex.afterBuild.enabled": true,
   "latex-workshop.view.pdf.viewer": "tab",
   "latex-workshop.latex.outDir": "%DIR%",
